@@ -17,6 +17,9 @@ target/
 # Documentation build temp file
 .manual-build.html
 
+# Local agent instructions (kept out of the repository)
+AGENTS.md
+
 # IDE / OS
 .idea/
 .vscode/
