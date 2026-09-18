@@ -1,10 +1,11 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
+import { SeoService } from '../../../core/seo/seo.service';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
 import { PropertyMedia } from '../../../shared/components/property-media/property-media';
@@ -16,11 +17,12 @@ import { PublicProperty } from '../../../shared/models/public-property';
   imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, PropertyMedia, Skeleton, EmptyState],
   templateUrl: './public-search.html',
 })
-export class PublicSearch implements OnInit {
+export class PublicSearch implements OnInit, OnDestroy {
   private readonly publicApi = inject(PublicPropertyService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly seo = inject(SeoService);
   protected readonly i18n = inject(LanguageService);
 
   protected readonly results = signal<PublicProperty[]>([]);
@@ -28,11 +30,16 @@ export class PublicSearch implements OnInit {
   protected readonly searchForm = this.fb.nonNullable.group({ query: [''] });
 
   ngOnInit(): void {
+    this.seo.setPage({ titleKey: 'search.title', descriptionKey: 'search.metaDescription', path: '/search' });
     this.route.queryParamMap.subscribe((params) => {
       const query = params.get('query') ?? '';
       this.searchForm.patchValue({ query });
       this.load(query);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seo.clear();
   }
 
   protected search(): void {

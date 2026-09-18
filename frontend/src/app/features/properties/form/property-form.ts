@@ -1,9 +1,10 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { ApiErrorService } from '../../../core/services/api-error.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { OwnerService } from '../../../core/services/owner.service';
 import { PropertyService } from '../../../core/services/property.service';
 import { fieldErrorMessage } from '../../../shared/forms/field-error';
@@ -27,11 +28,14 @@ export class PropertyForm implements OnInit {
   private readonly apiErrors = inject(ApiErrorService);
   private readonly toasts = inject(ToastService);
   private readonly i18n = inject(LanguageService);
+  private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
+  protected readonly canChooseOwner = computed(() => this.auth.role() === 'ADMIN');
   protected readonly id = signal<number | null>(null);
   protected readonly owners = signal<Owner[]>([]);
+  protected readonly ownerName = signal<string | null>(null);
   protected readonly images = signal<PropertyImage[]>([]);
   protected readonly uploading = signal(false);
   protected readonly submitting = signal(false);
@@ -46,10 +50,12 @@ export class PropertyForm implements OnInit {
   });
 
   ngOnInit(): void {
-    this.ownersApi.list().subscribe({
-      next: (owners) => this.owners.set(owners),
-      error: (error: unknown) => this.errorKey.set(this.apiErrors.keyOf(error)),
-    });
+    if (this.canChooseOwner()) {
+      this.ownersApi.list().subscribe({
+        next: (owners) => this.owners.set(owners),
+        error: (error: unknown) => this.errorKey.set(this.apiErrors.keyOf(error)),
+      });
+    }
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
@@ -57,6 +63,7 @@ export class PropertyForm implements OnInit {
       this.id.set(id);
       this.propertiesApi.get(id).subscribe({
         next: (property) => {
+          this.ownerName.set(property.ownerName);
           this.images.set(property.images);
           this.form.patchValue({
             ownerId: property.ownerId,
@@ -74,7 +81,6 @@ export class PropertyForm implements OnInit {
   protected fieldError(field: 'ownerId' | 'address' | 'city' | 'monthlyRent'): string | null {
     return fieldErrorMessage(this.form.controls[field], this.i18n);
   }
-
 
   protected onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -148,23 +154,6 @@ export class PropertyForm implements OnInit {
     });
   }
 
-  private uploadNext(queue: File[], id: number, index: number): void {
-    if (index >= queue.length) {
-      this.uploading.set(false);
-      return;
-    }
-    this.propertiesApi.uploadImage(id, queue[index]).subscribe({
-      next: (image) => {
-        this.images.update((list) => [...list, image]);
-        this.uploadNext(queue, id, index + 1);
-      },
-      error: (error: unknown) => {
-        this.uploading.set(false);
-        this.toasts.error(this.apiErrors.keyOf(error));
-      },
-    });
-  }
-
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -198,6 +187,23 @@ export class PropertyForm implements OnInit {
         this.errorKey.set(this.apiErrors.keyOf(error));
         this.toasts.error(this.apiErrors.keyOf(error));
         this.submitting.set(false);
+      },
+    });
+  }
+
+  private uploadNext(queue: File[], id: number, index: number): void {
+    if (index >= queue.length) {
+      this.uploading.set(false);
+      return;
+    }
+    this.propertiesApi.uploadImage(id, queue[index]).subscribe({
+      next: (image) => {
+        this.images.update((list) => [...list, image]);
+        this.uploadNext(queue, id, index + 1);
+      },
+      error: (error: unknown) => {
+        this.uploading.set(false);
+        this.toasts.error(this.apiErrors.keyOf(error));
       },
     });
   }

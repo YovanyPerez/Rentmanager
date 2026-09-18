@@ -1,11 +1,12 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
+import { SeoService } from '../../../core/seo/seo.service';
 import { Icon } from '../../../shared/components/icon/icon';
 import { PropertyMedia } from '../../../shared/components/property-media/property-media';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
@@ -16,11 +17,12 @@ import { PublicProperty } from '../../../shared/models/public-property';
   imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, PropertyMedia, Skeleton],
   templateUrl: './landing.html',
 })
-export class Landing implements OnInit {
+export class Landing implements OnInit, OnDestroy {
   private readonly publicApi = inject(PublicPropertyService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly seo = inject(SeoService);
   protected readonly i18n = inject(LanguageService);
 
   protected readonly featured = signal<PublicProperty[]>([]);
@@ -30,6 +32,7 @@ export class Landing implements OnInit {
   protected readonly searchForm = this.fb.nonNullable.group({ query: [''] });
 
   ngOnInit(): void {
+    this.seo.setPage({ titleKey: 'landing.title', descriptionKey: 'landing.metaDescription', path: '/' });
     if (this.auth.isAuthenticated()) {
       void this.router.navigateByUrl('/home', { replaceUrl: true });
       return;
@@ -41,6 +44,10 @@ export class Landing implements OnInit {
       },
       error: () => this.loading.set(false),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seo.clear();
   }
 
   protected search(): void {

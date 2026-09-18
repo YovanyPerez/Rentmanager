@@ -1,3 +1,5 @@
+<a class="skip-link" href="#main-content">{{ 'nav.skipToContent' | transloco }}</a>
+
 @if (auth.user(); as user) {
   <div class="shell">
     <aside class="sidebar" [class.sidebar--open]="menuOpen()">
@@ -30,7 +32,7 @@
       <div class="scrim" (click)="closeMenu()"></div>
     }
 
-    <div class="shell__main">
+    <div class="shell__main" [attr.inert]="menuOpen() ? '' : null">
       <header class="topbar">
         <button
           type="button"
@@ -57,7 +59,7 @@
         </button>
       </header>
 
-      <main class="content">
+      <main class="content" id="main-content">
         <router-outlet />
       </main>
     </div>
@@ -76,7 +78,7 @@
     <div class="public-layout__lang">
       <app-language-selector />
     </div>
-    <main>
+    <main id="main-content">
       <router-outlet />
     </main>
   </div>

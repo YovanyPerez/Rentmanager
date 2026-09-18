@@ -13,7 +13,9 @@
     "logout": "Cerrar sesión",
     "menu": "Abrir menú",
     "primary": "Navegación principal",
-    "properties": "Propiedades"
+    "properties": "Propiedades",
+    "language": "Idioma",
+    "skipToContent": "Saltar al contenido"
   },
   "common": {
     "loading": "Cargando…",
@@ -28,7 +30,8 @@
     "deleted": "Eliminado correctamente.",
     "search": "Buscar…",
     "all": "Todos",
-    "noResults": "Nada coincide con el filtro."
+    "noResults": "Nada coincide con el filtro.",
+    "retry": "Reintentar"
   },
   "auth": {
     "email": "Correo electrónico",
@@ -66,13 +69,15 @@
     "ctaTitle": "Gestión sencilla, propiedades rentables",
     "ctaSubtitle": "Crea una cuenta o contacta con la administración para empezar.",
     "ctaButton": "Crear cuenta",
-    "footerNote": "Gestión inmobiliaria, más simple."
+    "footerNote": "Gestión inmobiliaria, más simple.",
+    "metaDescription": "Encuentra propiedades en alquiler y gestiona contratos, pagos y mantenimiento con RentManager."
   },
   "search": {
     "title": "Propiedades disponibles",
     "placeholder": "Buscar por ciudad o dirección…",
     "button": "Buscar",
-    "empty": "No hay propiedades que coincidan con tu búsqueda."
+    "empty": "No hay propiedades que coincidan con tu búsqueda.",
+    "metaDescription": "Explora las propiedades disponibles en alquiler y encuentra tu próximo hogar."
   },
   "detail": {
     "title": "Detalle de propiedad",
@@ -82,7 +87,8 @@
     "consult": "¿Te interesa esta propiedad?",
     "consultHint": "Crea una cuenta o inicia sesión para gestionar tu alquiler.",
     "unavailable": "Propiedad no disponible",
-    "unavailableHint": "Esta propiedad ya no está disponible o no existe."
+    "unavailableHint": "Esta propiedad ya no está disponible o no existe.",
+    "metaDescription": "Consulta el detalle de esta propiedad en alquiler: ubicación, renta mensual y más."
   },
   "home": {
     "title": "Inicio",
@@ -102,7 +108,8 @@
     "upcomingPayments": "Próximos pagos",
     "maintenanceRequests": "Solicitudes de mantenimiento",
     "noUpcoming": "No hay pagos pendientes.",
-    "noRequests": "No hay solicitudes abiertas."
+    "noRequests": "No hay solicitudes abiertas.",
+    "loadError": "No se pudieron cargar algunos datos."
   },
   "properties": {
     "title": "Propiedades",

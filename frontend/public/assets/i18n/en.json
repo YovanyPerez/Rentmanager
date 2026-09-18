@@ -13,7 +13,9 @@
     "logout": "Sign out",
     "menu": "Open menu",
     "primary": "Main navigation",
-    "properties": "Properties"
+    "properties": "Properties",
+    "language": "Language",
+    "skipToContent": "Skip to content"
   },
   "common": {
     "loading": "Loading…",
@@ -28,7 +30,8 @@
     "deleted": "Deleted successfully.",
     "search": "Search…",
     "all": "All",
-    "noResults": "Nothing matches the filter."
+    "noResults": "Nothing matches the filter.",
+    "retry": "Retry"
   },
   "auth": {
     "email": "Email",
@@ -66,13 +69,15 @@
     "ctaTitle": "Simple management, profitable properties",
     "ctaSubtitle": "Create an account or contact the administration to get started.",
     "ctaButton": "Create account",
-    "footerNote": "Property management, made simple."
+    "footerNote": "Property management, made simple.",
+    "metaDescription": "Find rental properties and manage contracts, payments and maintenance with RentManager."
   },
   "search": {
     "title": "Available properties",
     "placeholder": "Search by city or address…",
     "button": "Search",
-    "empty": "No properties match your search."
+    "empty": "No properties match your search.",
+    "metaDescription": "Browse the available rental properties and find your next home."
   },
   "detail": {
     "title": "Property details",
@@ -82,7 +87,8 @@
     "consult": "Interested in this property?",
     "consultHint": "Create an account or sign in to manage your rental.",
     "unavailable": "Property not available",
-    "unavailableHint": "This property is no longer available or does not exist."
+    "unavailableHint": "This property is no longer available or does not exist.",
+    "metaDescription": "See the details of this rental property: location, monthly rent and more."
   },
   "home": {
     "title": "Home",
@@ -102,7 +108,8 @@
     "upcomingPayments": "Upcoming payments",
     "maintenanceRequests": "Maintenance requests",
     "noUpcoming": "No pending payments.",
-    "noRequests": "No open requests."
+    "noRequests": "No open requests.",
+    "loadError": "Some data could not be loaded."
   },
   "properties": {
     "title": "Properties",

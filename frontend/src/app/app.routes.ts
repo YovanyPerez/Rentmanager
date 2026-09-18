@@ -62,7 +62,7 @@ export const routes: Routes = [
   {
     path: 'properties/:id/edit',
     title: 'properties.edit',
-    canActivate: [authGuard, roleGuard('ADMIN')],
+    canActivate: [authGuard, roleGuard('ADMIN', 'OWNER')],
     loadComponent: () =>
       import('./features/properties/form/property-form').then((m) => m.PropertyForm),
   },

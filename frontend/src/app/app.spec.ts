@@ -73,10 +73,15 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
 
-    const buttons = fixture.nativeElement.querySelectorAll('.language-selector button');
-    expect(buttons.length).toBe(2);
+    const trigger = fixture.nativeElement.querySelector('.lang__trigger') as HTMLButtonElement;
+    expect(trigger).toBeTruthy();
+    trigger.click();
+    await fixture.whenStable();
 
-    buttons[1].click();
+    const options = fixture.nativeElement.querySelectorAll('.lang__option');
+    expect(options.length).toBe(2);
+
+    options[1].click();
 
     expect(TestBed.inject(LanguageService).lang()).toBe('en');
     expect(localStorage.getItem('rentmanager.lang')).toBe('en');

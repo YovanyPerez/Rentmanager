@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /$
+Allow: /search
+Allow: /property/
+Disallow: /
+
+Sitemap: https://rentmanager.example.com/sitemap.xml

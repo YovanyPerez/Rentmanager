@@ -3,12 +3,16 @@
 
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
     <label for="ownerId">{{ 'properties.owner' | transloco }}</label>
-    <select id="ownerId" formControlName="ownerId">
-      <option [ngValue]="0" disabled>{{ 'properties.selectOwner' | transloco }}</option>
-      @for (owner of owners(); track owner.id) {
-        <option [ngValue]="owner.id">{{ owner.fullName }}</option>
-      }
-    </select>
+    @if (canChooseOwner()) {
+      <select id="ownerId" formControlName="ownerId">
+        <option [ngValue]="0" disabled>{{ 'properties.selectOwner' | transloco }}</option>
+        @for (owner of owners(); track owner.id) {
+          <option [ngValue]="owner.id">{{ owner.fullName }}</option>
+        }
+      </select>
+    } @else {
+      <input id="ownerId" type="text" [value]="ownerName() ?? ''" disabled />
+    }
     @if (fieldError('ownerId'); as message) {
       <p class="field-error">{{ message }}</p>
     }

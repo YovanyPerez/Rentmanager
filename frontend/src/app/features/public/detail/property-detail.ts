@@ -1,9 +1,10 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
+import { SeoService } from '../../../core/seo/seo.service';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
@@ -15,9 +16,10 @@ import { PublicProperty } from '../../../shared/models/public-property';
   imports: [RouterLink, TranslocoPipe, DecimalPipe, Icon, Skeleton, EmptyState],
   templateUrl: './property-detail.html',
 })
-export class PropertyDetail implements OnInit {
+export class PropertyDetail implements OnInit, OnDestroy {
   private readonly publicApi = inject(PublicPropertyService);
   private readonly route = inject(ActivatedRoute);
+  private readonly seo = inject(SeoService);
   protected readonly i18n = inject(LanguageService);
 
   protected readonly property = signal<PublicProperty | null>(null);
@@ -27,6 +29,11 @@ export class PropertyDetail implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.seo.setPage({
+      titleKey: 'detail.title',
+      descriptionKey: 'detail.metaDescription',
+      path: `/property/${id}`,
+    });
     this.publicApi.get(id).subscribe({
       next: (property) => {
         this.property.set(property);
@@ -38,5 +45,9 @@ export class PropertyDetail implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seo.clear();
   }
 }
