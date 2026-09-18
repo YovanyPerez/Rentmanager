@@ -1,43 +1,41 @@
 # RentManager
 
-Web-based property rental management platform: properties, owners, tenants, contracts, payments and maintenance requests.
+Plataforma web para la gestión de alquileres: propiedades, propietarios, inquilinos, contratos, pagos y solicitudes de mantenimiento.
 
-See [`AGENTS.md`](./AGENTS.md) for requirements, architecture and the development plan (current phase: database / backend foundation).
-
-## Repository structure
+## Estructura del repositorio
 
 ```text
-frontend/   Angular application (Angular 22, Transloco i18n)
-backend/    Spring Boot API (Spring Boot 4, Java 17, Maven wrapper)
-database/   SQL schema, seed data and database documentation
-docs/       Project documentation
+frontend/   Aplicación Angular (Angular 22, i18n con Transloco)
+backend/    API Spring Boot (Spring Boot 4, Java 17, Maven wrapper)
+database/   Esquema SQL, datos de ejemplo y documentación de la base de datos
+docs/       Documentación del proyecto
 ```
 
-## Prerequisites
+## Requisitos
 
-- Node.js 24+ and npm 11+
-- Java 17+ (for the backend)
-- Docker (for the local MySQL database)
+- Node.js 24+ y npm 11+
+- Java 17+ (para el backend)
+- Docker (para la base de datos MySQL local)
 
-## Getting started
+## Puesta en marcha
 
-One command (Windows: starts Docker/MySQL, the API and the Angular dev server, then opens the browser):
+Un solo comando (Windows: levanta Docker/MySQL, la API y el servidor de desarrollo de Angular, y abre el navegador):
 
 ```powershell
-.\dev.cmd      # start everything
-.\stop.cmd     # stop everything (database data is kept)
+.\dev.cmd      # arranca todo
+.\stop.cmd     # detiene todo (los datos de la base de datos se conservan)
 ```
 
-Manual start:
+Arranque manual:
 
-1. Start the database (first run applies `database/01_schema.sql` and `database/02_seed.sql`):
+1. Base de datos (la primera ejecución aplica `database/01_schema.sql` y `database/02_seed.sql`):
 
 ```bash
-cp .env.example .env   # adjust credentials if needed
+cp .env.example .env   # ajusta las credenciales si hace falta
 docker compose up -d
 ```
 
-2. Backend (requires the database to be running):
+2. Backend (requiere la base de datos en marcha):
 
 ```bash
 cd backend
@@ -45,9 +43,9 @@ cd backend
                            # http://localhost:8080/api/health
 ```
 
-The datasource can be overridden with the `DB_URL`, `DB_USER` and `DB_PASSWORD` environment variables. JWT settings are `JWT_SECRET` and `JWT_TTL_MINUTES`.
+La conexión a la base de datos se puede sobrescribir con las variables de entorno `DB_URL`, `DB_USER` y `DB_PASSWORD`. La configuración JWT son `JWT_SECRET` y `JWT_TTL_MINUTES`.
 
-`POST /api/auth/register` creates TENANT accounts only; `POST /api/auth/login` returns a JWT. A development ADMIN account is seeded on startup (`admin@rentmanager.local` / `admin1234`) unless `ADMIN_SEED_ENABLED=false`.
+`POST /api/auth/register` solo crea cuentas de INQUILINO; `POST /api/auth/login` devuelve un JWT. Al arrancar se crea una cuenta ADMIN de desarrollo (`admin@rentmanager.local` / `admin1234`) salvo que `ADMIN_SEED_ENABLED=false`.
 
 3. Frontend:
 
@@ -57,14 +55,13 @@ npm install
 npm start              # http://localhost:4200
 ```
 
-## Documentation
+## Documentación
 
-- `AGENTS.md` — project rules, architecture and phases
-- `docs/ARCHITECTURE.md` — backend/data model/API guide (self-contained, for building or replacing the frontend)
-- `docs/i18n.md` — internationalisation conventions
-- `database/README.md` — data model and database decisions
+- `docs/ARCHITECTURE.md` — guía del backend, modelo de datos y API (autocontenida, para construir o reemplazar el frontend)
+- `docs/i18n.md` — convenciones de internacionalización
+- `database/README.md` — modelo de datos y decisiones de la base de datos
 - `frontend/public/assets/properties/CREDITS.md` — licencias de las fotos de demostración (CC0)
-- Manual de usuario — below in this README, also available as `docs/manual-usuario.pdf`
+- Manual de usuario — más abajo en este README, también disponible como `docs/manual-usuario.pdf`
 
 ---
 
