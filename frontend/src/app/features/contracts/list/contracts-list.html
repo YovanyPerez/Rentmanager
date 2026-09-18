@@ -54,8 +54,8 @@
           </tr>
         </thead>
         <tbody>
-          @for (contract of filtered(); track contract.id) {
-            <tr animate.enter="enter-animation">
+          @for (contract of filtered(); track contract.id; let i = $index) {
+            <tr animate.enter="enter-animation" [style.animation-delay.ms]="i < 10 ? i * 30 : 300">
               <td>{{ contract.propertyAddress }}</td>
               <td>{{ contract.tenantName }}</td>
               <td>{{ contract.startDate | date: 'mediumDate' : undefined : i18n.lang() }}</td>

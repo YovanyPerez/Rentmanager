@@ -9,7 +9,12 @@
   </div>
 
   @if (errorKey(); as key) {
-    <p class="form-error">{{ key | transloco }}</p>
+    <div class="form-error load-error">
+      <span>{{ key | transloco }}</span>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="load()">
+        {{ 'common.retry' | transloco }}
+      </button>
+    </div>
   }
 
   <div class="kpi-grid">
@@ -30,11 +35,13 @@
         <span class="kpi__label"><app-icon name="credit-card" [size]="16" />{{ 'dashboard.monthlyIncome' | transloco }}</span>
         <span class="kpi__value">{{ data.monthlyIncome | number: '1.2-2' : i18n.lang() }}</span>
       </article>
+    } @else if (loading()) {
+      <app-skeleton [height]="108" />
+      <app-skeleton [height]="108" />
+      <app-skeleton [height]="108" />
+      <app-skeleton [height]="108" />
     } @else {
-      <app-skeleton [height]="108" />
-      <app-skeleton [height]="108" />
-      <app-skeleton [height]="108" />
-      <app-skeleton [height]="108" />
+      <p class="entity-card__meta">{{ 'dashboard.loadError' | transloco }}</p>
     }
   </div>
 

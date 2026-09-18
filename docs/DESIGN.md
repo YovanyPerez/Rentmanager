@@ -17,13 +17,13 @@ Source of truth for the UI (Phase 16). Derived from the approved design referenc
 | `--color-primary-hover` | `#174A40` | Hover/active primary |
 | `--color-primary-soft` | `#E8F5E9` | Primary-tinted surfaces, selected rows |
 | `--color-text` | `#173D2D` | Body and headings |
-| `--color-text-muted` | `#6B7A74` | Secondary text, labels, meta |
+| `--color-text-muted` | `#5E6C67` | Secondary text, labels, meta |
 | `--color-border` | `#E0E6E4` | Hairlines, input borders, dividers |
 | `--color-surface` | `#FFFFFF` | Cards, sheets |
 | `--color-background` | `#F7F9FA` | App background |
 | `--color-danger` / `-soft` | `#C0392B` / `#FDECEA` | Destructive, overdue |
-| `--color-warning` / `-soft` | `#B7791F` / `#FEF3C7` | Pending, maintenance |
-| `--color-info` / `-soft` | `#2563EB` / `#E3EDFF` | Rented, in progress |
+| `--color-warning` / `-soft` | `#8A5910` / `#FEF3C7` | Pending, maintenance |
+| `--color-info` / `-soft` | `#1D4ED8` / `#E3EDFF` | Rented, in progress |
 | `--color-success` / `-soft` | `#1F7A4D` / `#E6F4EC` | Available, paid, completed |
 | `--color-neutral` / `-soft` | `#5B6B66` / `#EEF2F1` | Draft, inactive, cancelled |
 
@@ -110,12 +110,21 @@ Status → variant mapping (used by `<app-status-badge>`):
 
 ## 8. Accessibility
 
-- Minimum contrast 4.5:1 for text (the palette above meets AA on white and on `--color-primary`).
+- Minimum contrast 4.5:1 for text (the palette above meets AA on white and on `--color-primary`). Verified with a WCAG relative-luminance calculation:
+
+| Pair | Ratio |
+|---|---|
+| text on background / surface | 11.4:1 / 12.1:1 |
+| muted text on surface / background | 5.5:1 / 5.2:1 |
+| white on primary / primary on white | 7.7:1 |
+| chip success / warning / danger / info / neutral | 4.7 / 5.4 / 4.8 / 5.7 / 5.0 |
+
 - Visible focus: 2px `--color-primary` outline, 2px offset, never removed.
-- Keyboard: full operability, logical tab order, skip-link to content, modal focus trap, Esc closes overlays.
+- Keyboard: skip-link to `#main-content`, logical tab order, modal focus trap (ConfirmDialog), `inert` on the background while the mobile drawer is open, Esc closes overlays and the drawer.
 - Semantic HTML: `header/nav/main/section/table`, one `h1` per page, no skipped heading levels.
 - Informative images need `alt`; decorative ones `alt=""`. Property placeholders are decorative.
-- Private screens are never indexable (`robots: noindex`); public pages are marked `data: { public: true }`.
+- Private screens are never indexable (`robots: noindex`); public pages are marked `data: { public: true }` and receive meta description + Open Graph + canonical through `SeoService`.
+- Motion is disabled under `prefers-reduced-motion` (including route view transitions).
 
 ## 9. Content & i18n rules
 

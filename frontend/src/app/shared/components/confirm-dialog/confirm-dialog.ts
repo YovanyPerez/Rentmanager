@@ -1,4 +1,4 @@
-import { Component, HostListener, input, output } from '@angular/core';
+import { Component, ElementRef, HostListener, input, output, viewChild } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
@@ -8,9 +8,11 @@ import { TranslocoPipe } from '@jsverse/transloco';
     @if (open()) {
       <div class="overlay" animate.enter="enter-animation" (click)="cancelled.emit()">
         <div
+          #dialog
           class="dialog"
           role="dialog"
           aria-modal="true"
+          tabindex="-1"
           [attr.aria-label]="'common.confirmTitle' | transloco"
           (click)="$event.stopPropagation()"
         >
@@ -70,10 +72,43 @@ export class ConfirmDialog {
   readonly confirmed = output<void>();
   readonly cancelled = output<void>();
 
+  private readonly dialogPanel = viewChild<ElementRef<HTMLElement>>('dialog');
+
   @HostListener('document:keydown.escape')
   protected onEscape(): void {
     if (this.open()) {
       this.cancelled.emit();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  protected onKeydown(event: KeyboardEvent): void {
+    if (!this.open() || event.key !== 'Tab') {
+      return;
+    }
+    const panel = this.dialogPanel()?.nativeElement;
+    if (!panel) {
+      return;
+    }
+    const focusables = Array.from(
+      panel.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    if (focusables.length === 0) {
+      return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement as HTMLElement | null;
+    if (event.shiftKey) {
+      if (active === first || !panel.contains(active)) {
+        event.preventDefault();
+        last.focus();
+      }
+    } else if (active === last || !panel.contains(active)) {
+      event.preventDefault();
+      first.focus();
     }
   }
 }

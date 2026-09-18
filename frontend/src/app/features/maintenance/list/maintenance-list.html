@@ -54,8 +54,8 @@
           </tr>
         </thead>
         <tbody>
-          @for (request of filtered(); track request.id) {
-            <tr animate.enter="enter-animation">
+          @for (request of filtered(); track request.id; let i = $index) {
+            <tr animate.enter="enter-animation" [style.animation-delay.ms]="i < 10 ? i * 30 : 300">
               <td>{{ request.propertyAddress }}</td>
               <td>{{ request.title }}</td>
               <td>{{ request.createdByName }}</td>

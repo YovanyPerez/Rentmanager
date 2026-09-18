@@ -43,8 +43,12 @@
     <app-empty-state icon="search" titleKey="properties.noResults" />
   } @else {
     <div class="card-grid">
-      @for (property of filtered(); track property.id) {
-        <article class="entity-card" animate.enter="enter-animation">
+      @for (property of filtered(); track property.id; let i = $index) {
+        <article
+          class="entity-card"
+          animate.enter="enter-animation"
+          [style.animation-delay.ms]="i < 10 ? i * 35 : 350"
+        >
           <div class="entity-card__media">
             <app-property-media [url]="property.imageUrl" [alt]="property.address" />
             <app-status-badge kind="property" [status]="property.status" />

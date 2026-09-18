@@ -42,8 +42,8 @@
           </tr>
         </thead>
         <tbody>
-          @for (owner of filtered(); track owner.id) {
-            <tr animate.enter="enter-animation">
+          @for (owner of filtered(); track owner.id; let i = $index) {
+            <tr animate.enter="enter-animation" [style.animation-delay.ms]="i < 10 ? i * 30 : 300">
               <td>{{ owner.fullName }}</td>
               <td>{{ owner.email ?? '—' }}</td>
               <td>{{ owner.phone ?? '—' }}</td>

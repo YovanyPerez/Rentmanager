@@ -41,6 +41,7 @@ export class Dashboard implements OnInit {
   protected readonly errorKey = signal<string | null>(null);
 
   private pendingCalls = 3;
+  private readonly retried = new Set<string>();
 
   protected readonly upcoming = computed(() =>
     this.payments()
@@ -83,26 +84,46 @@ export class Dashboard implements OnInit {
   protected readonly maxChart = computed(() => Math.max(...this.chart().map((m) => m.total), 1));
 
   ngOnInit(): void {
+    this.load();
+  }
+
+  protected load(): void {
+    this.loading.set(true);
+    this.errorKey.set(null);
+    this.retried.clear();
+    this.pendingCalls = 3;
+    this.loadStats();
+    this.loadPayments();
+    this.loadRequests();
+  }
+
+  private loadStats(): void {
     this.dashboardApi.statistics().subscribe({
       next: (stats) => {
         this.stats.set(stats);
         this.complete();
       },
-      error: (error: unknown) => this.fail(error),
+      error: (error: unknown) => this.fail('stats', error, () => this.loadStats()),
     });
+  }
+
+  private loadPayments(): void {
     this.paymentsApi.list().subscribe({
       next: (payments) => {
         this.payments.set(payments);
         this.complete();
       },
-      error: (error: unknown) => this.fail(error),
+      error: (error: unknown) => this.fail('payments', error, () => this.loadPayments()),
     });
+  }
+
+  private loadRequests(): void {
     this.maintenanceApi.list().subscribe({
       next: (requests) => {
         this.requests.set(requests);
         this.complete();
       },
-      error: (error: unknown) => this.fail(error),
+      error: (error: unknown) => this.fail('requests', error, () => this.loadRequests()),
     });
   }
 
@@ -117,10 +138,16 @@ export class Dashboard implements OnInit {
     }
   }
 
-  private fail(error: unknown): void {
-    const key = this.apiErrors.keyOf(error);
-    this.errorKey.set(key);
-    this.toasts.error(key);
-    this.complete();
+  /** One silent retry per call (covers a backend restarting); the second failure is shown. */
+  private fail(name: string, error: unknown, retry: () => void): void {
+    if (this.retried.has(name)) {
+      const key = this.apiErrors.keyOf(error);
+      this.errorKey.set(key);
+      this.toasts.error(key);
+      this.complete();
+      return;
+    }
+    this.retried.add(name);
+    setTimeout(retry, 1500);
   }
 }

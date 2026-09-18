@@ -6,15 +6,15 @@
   --color-primary-hover: #174a40;
   --color-primary-soft: #e8f5e9;
   --color-text: #173d2d;
-  --color-text-muted: #6b7a74;
+  --color-text-muted: #5e6c67;
   --color-border: #e0e6e4;
   --color-surface: #ffffff;
   --color-background: #f7f9fa;
   --color-danger: #c0392b;
   --color-danger-soft: #fdecea;
-  --color-warning: #b7791f;
+  --color-warning: #8a5910;
   --color-warning-soft: #fef3c7;
-  --color-info: #2563eb;
+  --color-info: #1d4ed8;
   --color-info-soft: #e3edff;
   --color-success: #1f7a4d;
   --color-success-soft: #e6f4ec;
@@ -1038,6 +1038,68 @@ tbody tr:hover {
   margin-top: 4px;
 }
 
+.load-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Route view transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: var(--ease-premium);
+}
+
+::view-transition-old(root) {
+  animation-name: vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: -120px;
+  left: 16px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-standard);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
 
 .photo-grid {
   display: grid;
@@ -1124,3 +1186,4 @@ tbody tr:hover {
   object-fit: cover;
   border-radius: 4px;
 }
+

@@ -14,8 +14,13 @@
   <section class="panel">
     <h2>{{ 'home.quickAccess' | transloco }}</h2>
     <div class="card-grid">
-      @for (link of links(); track link.path) {
-        <a class="entity-card quick-card" [routerLink]="link.path" animate.enter="enter-animation">
+      @for (link of links(); track link.path; let i = $index) {
+        <a
+          class="entity-card quick-card"
+          [routerLink]="link.path"
+          animate.enter="enter-animation"
+          [style.animation-delay.ms]="i * 50"
+        >
           <div class="entity-card__body">
             <span class="quick-card__icon"><app-icon [name]="link.icon" [size]="20" /></span>
             <h3 class="entity-card__title">{{ link.key | transloco }}</h3>

@@ -22,8 +22,13 @@
     <app-empty-state icon="search" titleKey="search.empty" />
   } @else {
     <div class="card-grid">
-      @for (property of results(); track property.id) {
-        <a class="entity-card" [routerLink]="['/property', property.id]" animate.enter="enter-animation">
+      @for (property of results(); track property.id; let i = $index) {
+        <a
+          class="entity-card"
+          [routerLink]="['/property', property.id]"
+          animate.enter="enter-animation"
+          [style.animation-delay.ms]="i < 10 ? i * 35 : 350"
+        >
           <div class="entity-card__media">
             <app-property-media [url]="property.imageUrl" [alt]="property.address" />
             <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>

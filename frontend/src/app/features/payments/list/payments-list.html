@@ -54,8 +54,8 @@
           </tr>
         </thead>
         <tbody>
-          @for (payment of filtered(); track payment.id) {
-            <tr animate.enter="enter-animation">
+          @for (payment of filtered(); track payment.id; let i = $index) {
+            <tr animate.enter="enter-animation" [style.animation-delay.ms]="i < 10 ? i * 30 : 300">
               <td>{{ payment.propertyAddress }}</td>
               <td>{{ payment.tenantName }}</td>
               <td>{{ payment.amount | number: '1.2-2' : i18n.lang() }}</td>
