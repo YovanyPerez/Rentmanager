@@ -705,7 +705,7 @@ tbody tr:hover {
   align-items: center;
   gap: 16px;
   padding: 14px 24px 14px 24px;
-  padding-right: 112px;
+  padding-right: 208px;
   border-bottom: 1px solid var(--color-border);
   background: color-mix(in srgb, var(--color-surface) 88%, transparent);
   backdrop-filter: blur(8px);
@@ -1158,6 +1158,10 @@ tbody tr:hover {
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+.kpi__money {
+  display: block;
 }
 
 .detail-thumbs {

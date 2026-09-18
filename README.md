@@ -72,6 +72,13 @@ npm start              # http://localhost:4200
 
 RentManager gestiona propiedades, propietarios, inquilinos, contratos, pagos y solicitudes de mantenimiento. La interfaz está disponible en **español** e **inglés** y el idioma se cambia con el selector de la cabecera sin recargar la aplicación.
 
+## Idioma, país y moneda
+
+- El **selector de idioma** cambia todos los textos (es/en).
+- El **selector de país** (Colombia 🇨🇴, España 🇪🇸, México 🇲🇽, Estados Unidos 🇺🇸) ajusta el formato de fechas y números y la moneda por defecto de las propiedades nuevas. Ambos selectores se recuerdan entre sesiones.
+- Cada propiedad tiene su **propia moneda** (COP, EUR, MXN o USD), que se elige en el formulario y se copia al contrato al crearlo; los pagos heredan la moneda del contrato.
+- Los importes se muestran con el símbolo y formato de la región activa (p. ej. `$ 1.800.000` en Colombia, `950 €` en España). El panel suma los ingresos **por moneda**, sin conversión de divisas.
+
 ## Cuentas de demostración
 
 Los datos de ejemplo y estas cuentas se crean automáticamente al ejecutar `npm run docs:capture` (desde `frontend/`), que además regenera todas las capturas de este manual.
@@ -146,7 +153,7 @@ Listado con filtro por estado. Desde cada tarjeta el administrador puede cambiar
 
 ![Listado de propiedades](docs/images/09-admin-propiedades.png)
 
-Formulario de alta de propiedad, con propietario, dirección, ciudad, descripción y renta mensual. En la edición se gestiona la galería de fotos: se suben desde el almacenamiento (JPEG, PNG o WebP, hasta 5 MB y máximo 6 por propiedad), se elige la portada, se reordenan y se eliminan. La portada es la foto que aparece en las tarjetas y en el buscador; si no hay fotos, se muestra el marcador con el icono.
+Formulario de alta de propiedad, con propietario, dirección, ciudad, descripción, moneda y renta mensual. En la edición se gestiona la galería de fotos: se suben desde el almacenamiento (JPEG, PNG o WebP, hasta 5 MB y máximo 6 por propiedad), se elige la portada, se reordenan y se eliminan. La portada es la foto que aparece en las tarjetas y en el buscador; si no hay fotos, se muestra el marcador con el icono.
 
 ![Nueva propiedad](docs/images/10-admin-propiedad-nueva.png)
 

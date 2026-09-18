@@ -1,26 +1,26 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { LanguageService } from '../../../core/i18n/language.service';
+import { RegionService } from '../../../core/i18n/region.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
 import { SeoService } from '../../../core/seo/seo.service';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
+import { MoneyPipe } from '../../../shared/pipes/money.pipe';
 import { PropertyImage } from '../../../shared/models/property';
 import { PublicProperty } from '../../../shared/models/public-property';
 
 @Component({
   selector: 'app-property-detail',
-  imports: [RouterLink, TranslocoPipe, DecimalPipe, Icon, Skeleton, EmptyState],
+  imports: [RouterLink, TranslocoPipe, Icon, Skeleton, EmptyState, MoneyPipe],
   templateUrl: './property-detail.html',
 })
 export class PropertyDetail implements OnInit, OnDestroy {
   private readonly publicApi = inject(PublicPropertyService);
   private readonly route = inject(ActivatedRoute);
   private readonly seo = inject(SeoService);
-  protected readonly i18n = inject(LanguageService);
+  protected readonly region = inject(RegionService);
 
   protected readonly property = signal<PublicProperty | null>(null);
   protected readonly activeImage = signal<PropertyImage | null>(null);

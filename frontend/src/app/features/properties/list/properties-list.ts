@@ -1,8 +1,7 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { LanguageService } from '../../../core/i18n/language.service';
+import { RegionService } from '../../../core/i18n/region.service';
 import { ApiErrorService } from '../../../core/services/api-error.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { PropertyService } from '../../../core/services/property.service';
@@ -13,6 +12,7 @@ import { PropertyMedia } from '../../../shared/components/property-media/propert
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
 import { StatusBadge } from '../../../shared/components/status-badge/status-badge';
 import { ToastService } from '../../../shared/components/toast/toast.service';
+import { MoneyPipe } from '../../../shared/pipes/money.pipe';
 import { Property, PropertyStatus } from '../../../shared/models/property';
 
 @Component({
@@ -20,13 +20,13 @@ import { Property, PropertyStatus } from '../../../shared/models/property';
   imports: [
     RouterLink,
     TranslocoPipe,
-    DecimalPipe,
     Icon,
     PropertyMedia,
     Skeleton,
     StatusBadge,
     EmptyState,
     ConfirmDialog,
+    MoneyPipe,
   ],
   templateUrl: './properties-list.html',
 })
@@ -35,7 +35,7 @@ export class PropertiesList implements OnInit {
   private readonly apiErrors = inject(ApiErrorService);
   private readonly toasts = inject(ToastService);
   protected readonly auth = inject(AuthService);
-  protected readonly i18n = inject(LanguageService);
+  protected readonly region = inject(RegionService);
 
   protected readonly properties = signal<Property[]>([]);
   protected readonly loading = signal(true);

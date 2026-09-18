@@ -1,3 +1,4 @@
+import { CurrencyCode } from './currency';
 import { PropertyImage } from './property';
 
 export interface PublicProperty {
@@ -8,5 +9,6 @@ export interface PublicProperty {
   imageUrl: string | null;
   images: PropertyImage[];
   monthlyRent: number;
+  currency: CurrencyCode;
   status: 'AVAILABLE';
 }

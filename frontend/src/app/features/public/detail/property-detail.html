@@ -42,7 +42,7 @@
         <h1>{{ item.address }}</h1>
         <p class="entity-card__meta"><app-icon name="map-pin" [size]="14" /> {{ item.city }}</p>
         <p class="entity-card__price">
-          {{ item.monthlyRent | number: '1.2-2' : i18n.lang() }}
+          {{ item.monthlyRent | money: item.currency : region.locale() }}
           <span>{{ 'properties.perMonth' | transloco }}</span>
         </p>
 

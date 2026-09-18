@@ -1,3 +1,5 @@
+import { CurrencyCode } from './currency';
+
 export type ContractStatus = 'DRAFT' | 'ACTIVE' | 'EXPIRED' | 'TERMINATED';
 
 export interface Contract {
@@ -9,6 +11,7 @@ export interface Contract {
   startDate: string;
   endDate: string;
   monthlyRent: number;
+  currency: CurrencyCode;
   status: ContractStatus;
   createdAt: string;
   updatedAt: string;

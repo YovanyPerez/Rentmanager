@@ -97,7 +97,7 @@ async function ensureOwner(adminToken, user, userId) {
   return api('/owners', {
     method: 'POST',
     token: adminToken,
-    body: { fullName: user.fullName, email: user.email, phone: '+34 600 555 111', userId },
+    body: { fullName: user.fullName, email: user.email, phone: '+57 300 555 1111', userId },
   });
 }
 
@@ -108,7 +108,7 @@ async function ensureTenant(adminToken, user, userId) {
   return api('/tenants', {
     method: 'POST',
     token: adminToken,
-    body: { fullName: user.fullName, email: user.email, phone: '+34 600 555 222', userId },
+    body: { fullName: user.fullName, email: user.email, phone: '+57 300 555 2222', userId },
   });
 }
 
@@ -140,11 +140,11 @@ async function ensurePhoto(adminToken, property) {
 }
 
 const DEMO_PHOTOS = {
-  'Calle Mayor 12, 3ºA': 'cocina-madrid.jpg',
-  'Avenida del Puerto 8': 'apartamento-berlin.jpg',
-  'Calle Alcalá 45, 2ºB': 'piso-madrid.jpg',
-  'Avenida del Puerto 8, 3ºA': 'piso-valencia.jpg',
-  'Camino de la Sierra 21': 'casa-sevilla.jpg',
+  'Carrera 7 # 45-12, Apto 302': 'cocina-madrid.jpg',
+  'Calle 10 # 40-20, Apto 501': 'apartamento-berlin.jpg',
+  'Carrera 15 # 85-30, Apto 501': 'piso-madrid.jpg',
+  'Calle 5 # 23-45, Apto 1201': 'piso-valencia.jpg',
+  'Calle Betis 12, 3ºA': 'casa-sevilla.jpg',
 };
 
 async function ensureContract(adminToken, request) {
@@ -177,22 +177,25 @@ async function seedDemoData() {
   const tenantEntity = await ensureTenant(adminToken, TENANT_USER, tenantSignup.userId ?? tenant.userId);
 
   const available = await ensureProperty(adminToken, ownerEntity.id, {
-    address: 'Calle Alcalá 45, 2ºB',
-    city: 'Madrid',
-    description: 'Piso reformado de dos habitaciones, exterior y con ascensor.',
-    monthlyRent: 1150,
+    address: 'Carrera 15 # 85-30, Apto 501',
+    city: 'Bogotá',
+    description: 'Apartamento moderno cerca del Parque de la 93.',
+    currency: 'COP',
+    monthlyRent: 2200000,
   });
   const rented = await ensureProperty(adminToken, ownerEntity.id, {
-    address: 'Avenida del Puerto 8, 3ºA',
-    city: 'Valencia',
-    description: 'Apartamento luminoso junto al puerto, totalmente amueblado.',
-    monthlyRent: 950,
+    address: 'Calle 5 # 23-45, Apto 1201',
+    city: 'Medellín',
+    description: 'Apartamento con vista a las montañas en El Poblado.',
+    currency: 'COP',
+    monthlyRent: 1600000,
   });
-  const maintenance = await ensureProperty(adminToken, ownerEntity.id, {
-    address: 'Camino de la Sierra 21',
+  await ensureProperty(adminToken, ownerEntity.id, {
+    address: 'Calle Betis 12, 3ºA',
     city: 'Sevilla',
-    description: 'Casa adosada con patio y garaje.',
-    monthlyRent: 780,
+    description: 'Piso reformado junto al río, con ascensor.',
+    currency: 'EUR',
+    monthlyRent: 950,
   });
 
   const demoProperties = await api('/properties', { token: adminToken });
@@ -231,14 +234,6 @@ async function seedDemoData() {
   };
   if (!(await ensureContract(adminToken, draftRequest))) {
     await api('/contracts', { method: 'POST', token: adminToken, body: draftRequest });
-  }
-
-  if (maintenance.status !== 'MAINTENANCE') {
-    await api(`/properties/${maintenance.id}/status`, {
-      method: 'PATCH',
-      token: adminToken,
-      body: { status: 'MAINTENANCE' },
-    });
   }
 
   const payments = await api('/payments', { token: adminToken });

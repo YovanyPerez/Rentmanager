@@ -59,7 +59,7 @@
               <app-icon name="map-pin" [size]="14" /> {{ property.city }} · {{ property.ownerName }}
             </p>
             <p class="entity-card__price">
-              {{ property.monthlyRent | number: '1.2-2' : i18n.lang() }}
+              {{ property.monthlyRent | money: property.currency : region.locale() }}
               <span>{{ 'properties.perMonth' | transloco }}</span>
             </p>
 

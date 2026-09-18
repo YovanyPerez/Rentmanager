@@ -3,12 +3,14 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LanguageService } from '../../../core/i18n/language.service';
+import { RegionService } from '../../../core/i18n/region.service';
 import { ApiErrorService } from '../../../core/services/api-error.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { OwnerService } from '../../../core/services/owner.service';
 import { PropertyService } from '../../../core/services/property.service';
 import { fieldErrorMessage } from '../../../shared/forms/field-error';
 import { ToastService } from '../../../shared/components/toast/toast.service';
+import { CurrencyCode } from '../../../shared/models/currency';
 import { Owner } from '../../../shared/models/owner';
 import { PropertyImage, PropertyRequest } from '../../../shared/models/property';
 
@@ -28,11 +30,13 @@ export class PropertyForm implements OnInit {
   private readonly apiErrors = inject(ApiErrorService);
   private readonly toasts = inject(ToastService);
   private readonly i18n = inject(LanguageService);
+  private readonly region = inject(RegionService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   protected readonly canChooseOwner = computed(() => this.auth.role() === 'ADMIN');
+  protected readonly currencies: CurrencyCode[] = ['COP', 'EUR', 'MXN', 'USD'];
   protected readonly id = signal<number | null>(null);
   protected readonly owners = signal<Owner[]>([]);
   protected readonly ownerName = signal<string | null>(null);
@@ -46,6 +50,7 @@ export class PropertyForm implements OnInit {
     address: ['', [Validators.required]],
     city: ['', [Validators.required]],
     description: [''],
+    currency: [this.region.currency(), [Validators.required]],
     monthlyRent: [0, [Validators.required, Validators.min(0.01)]],
   });
 
@@ -70,6 +75,7 @@ export class PropertyForm implements OnInit {
             address: property.address,
             city: property.city,
             description: property.description ?? '',
+            currency: property.currency,
             monthlyRent: property.monthlyRent,
           });
         },
@@ -168,6 +174,7 @@ export class PropertyForm implements OnInit {
       address: value.address,
       city: value.city,
       description: value.description.trim() === '' ? null : value.description,
+      currency: value.currency,
       monthlyRent: value.monthlyRent,
     };
     const id = this.id();

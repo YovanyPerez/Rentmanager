@@ -58,9 +58,9 @@
             <tr animate.enter="enter-animation" [style.animation-delay.ms]="i < 10 ? i * 30 : 300">
               <td>{{ contract.propertyAddress }}</td>
               <td>{{ contract.tenantName }}</td>
-              <td>{{ contract.startDate | date: 'mediumDate' : undefined : i18n.lang() }}</td>
-              <td>{{ contract.endDate | date: 'mediumDate' : undefined : i18n.lang() }}</td>
-              <td>{{ contract.monthlyRent | number: '1.2-2' : i18n.lang() }}</td>
+              <td>{{ contract.startDate | date: 'mediumDate' : undefined : region.locale() }}</td>
+              <td>{{ contract.endDate | date: 'mediumDate' : undefined : region.locale() }}</td>
+              <td>{{ contract.monthlyRent | money: contract.currency : region.locale() }}</td>
               <td><app-status-badge kind="contract" [status]="contract.status" /></td>
               @if (auth.role() === 'ADMIN') {
                 <td class="row-actions">

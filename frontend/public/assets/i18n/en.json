@@ -6,6 +6,18 @@
     "es": "Español 🇪🇸",
     "en": "English 🇺🇸"
   },
+  "regions": {
+    "CO": "Colombia 🇨🇴",
+    "ES": "Spain 🇪🇸",
+    "MX": "Mexico 🇲🇽",
+    "US": "United States 🇺🇸"
+  },
+  "currencies": {
+    "COP": "Colombian peso (COP)",
+    "EUR": "Euro (EUR)",
+    "MXN": "Mexican peso (MXN)",
+    "USD": "US dollar (USD)"
+  },
   "nav": {
     "home": "Home",
     "login": "Sign in",
@@ -15,6 +27,7 @@
     "primary": "Main navigation",
     "properties": "Properties",
     "language": "Language",
+    "region": "Country",
     "skipToContent": "Skip to content"
   },
   "common": {
@@ -129,6 +142,7 @@
     "moveDown": "Move down",
     "uploading": "Uploading…",
     "photoAlt": "Property photo",
+    "currency": "Currency",
     "monthlyRent": "Monthly rent",
     "perMonth": "/mo",
     "owner": "Owner",

@@ -6,6 +6,18 @@
     "es": "Español 🇪🇸",
     "en": "English 🇺🇸"
   },
+  "regions": {
+    "CO": "Colombia 🇨🇴",
+    "ES": "España 🇪🇸",
+    "MX": "México 🇲🇽",
+    "US": "Estados Unidos 🇺🇸"
+  },
+  "currencies": {
+    "COP": "Peso colombiano (COP)",
+    "EUR": "Euro (EUR)",
+    "MXN": "Peso mexicano (MXN)",
+    "USD": "Dólar estadounidense (USD)"
+  },
   "nav": {
     "home": "Inicio",
     "login": "Iniciar sesión",
@@ -15,6 +27,7 @@
     "primary": "Navegación principal",
     "properties": "Propiedades",
     "language": "Idioma",
+    "region": "País",
     "skipToContent": "Saltar al contenido"
   },
   "common": {
@@ -129,6 +142,7 @@
     "moveDown": "Bajar",
     "uploading": "Subiendo…",
     "photoAlt": "Foto de la propiedad",
+    "currency": "Moneda",
     "monthlyRent": "Renta mensual",
     "perMonth": "/mes",
     "owner": "Propietario",

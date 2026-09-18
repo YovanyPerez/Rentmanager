@@ -58,9 +58,9 @@
             <tr animate.enter="enter-animation" [style.animation-delay.ms]="i < 10 ? i * 30 : 300">
               <td>{{ payment.propertyAddress }}</td>
               <td>{{ payment.tenantName }}</td>
-              <td>{{ payment.amount | number: '1.2-2' : i18n.lang() }}</td>
-              <td>{{ payment.dueDate | date: 'mediumDate' : undefined : i18n.lang() }}</td>
-              <td>{{ payment.paidDate ? (payment.paidDate | date: 'mediumDate' : undefined : i18n.lang()) : '—' }}</td>
+              <td>{{ payment.amount | money: payment.currency : region.locale() }}</td>
+              <td>{{ payment.dueDate | date: 'mediumDate' : undefined : region.locale() }}</td>
+              <td>{{ payment.paidDate ? (payment.paidDate | date: 'mediumDate' : undefined : region.locale()) : '—' }}</td>
               <td><app-status-badge kind="payment" [status]="payment.status" /></td>
               @if (auth.role() === 'ADMIN') {
                 <td class="row-actions">

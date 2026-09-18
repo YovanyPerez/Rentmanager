@@ -2,6 +2,9 @@ import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import localeEn from '@angular/common/locales/en';
 import localeEs from '@angular/common/locales/es';
+import localeEsCo from '@angular/common/locales/es-CO';
+import localeEsMx from '@angular/common/locales/es-MX';
+import localeEsUs from '@angular/common/locales/es-US';
 import {
   ApplicationConfig,
   inject,
@@ -21,6 +24,9 @@ import { RobotsService } from './core/seo/robots.service';
 
 registerLocaleData(localeEs);
 registerLocaleData(localeEn);
+registerLocaleData(localeEsCo);
+registerLocaleData(localeEsMx);
+registerLocaleData(localeEsUs);
 
 export const appConfig: ApplicationConfig = {
   providers: [

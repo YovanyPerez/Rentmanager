@@ -1,7 +1,7 @@
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { LanguageService } from '../../core/i18n/language.service';
+import { RegionService } from '../../core/i18n/region.service';
 import { ApiErrorService } from '../../core/services/api-error.service';
 import { AuthService } from '../../core/services/auth.service';
 import { DashboardService } from '../../core/services/dashboard.service';
@@ -11,6 +11,7 @@ import { Icon } from '../../shared/components/icon/icon';
 import { Skeleton } from '../../shared/components/skeleton/skeleton';
 import { StatusBadge } from '../../shared/components/status-badge/status-badge';
 import { ToastService } from '../../shared/components/toast/toast.service';
+import { MoneyPipe } from '../../shared/pipes/money.pipe';
 import { DashboardStats } from '../../shared/models/dashboard';
 import { Maintenance } from '../../shared/models/maintenance';
 import { Payment } from '../../shared/models/payment';
@@ -22,7 +23,7 @@ interface ChartMonth {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [TranslocoPipe, DecimalPipe, DatePipe, Skeleton, StatusBadge, Icon],
+  imports: [TranslocoPipe, DatePipe, Skeleton, StatusBadge, Icon, MoneyPipe],
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements OnInit {
@@ -32,7 +33,7 @@ export class Dashboard implements OnInit {
   private readonly apiErrors = inject(ApiErrorService);
   private readonly toasts = inject(ToastService);
   protected readonly auth = inject(AuthService);
-  protected readonly i18n = inject(LanguageService);
+  protected readonly region = inject(RegionService);
 
   protected readonly stats = signal<DashboardStats | null>(null);
   protected readonly payments = signal<Payment[]>([]);
@@ -58,16 +59,17 @@ export class Dashboard implements OnInit {
 
   protected readonly chart = computed<ChartMonth[]>(() => {
     const now = new Date();
+    const currency = this.region.currency();
     const months: ChartMonth[] = [];
     for (let index = 11; index >= 0; index--) {
       const date = new Date(now.getFullYear(), now.getMonth() - index, 1);
       months.push({
-        label: date.toLocaleDateString(this.i18n.lang(), { month: 'short' }),
+        label: date.toLocaleDateString(this.region.locale(), { month: 'short' }),
         total: 0,
       });
     }
     for (const payment of this.payments()) {
-      if (payment.status !== 'PAID' || !payment.paidDate) {
+      if (payment.status !== 'PAID' || !payment.paidDate || payment.currency !== currency) {
         continue;
       }
       const paid = new Date(payment.paidDate);

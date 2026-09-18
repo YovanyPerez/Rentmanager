@@ -1,3 +1,5 @@
+import { CurrencyCode } from './currency';
+
 export type PropertyStatus = 'AVAILABLE' | 'RENTED' | 'MAINTENANCE' | 'INACTIVE';
 
 export interface PropertyImage {
@@ -16,6 +18,7 @@ export interface Property {
   imageUrl: string | null;
   images: PropertyImage[];
   monthlyRent: number;
+  currency: CurrencyCode;
   status: PropertyStatus;
   createdAt: string;
   updatedAt: string;
@@ -26,5 +29,6 @@ export interface PropertyRequest {
   address: string;
   city: string;
   description: string | null;
+  currency: CurrencyCode;
   monthlyRent: number;
 }

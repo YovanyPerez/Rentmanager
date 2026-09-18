@@ -4,6 +4,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from './core/services/auth.service';
 import { Icon, IconName } from './shared/components/icon/icon';
 import { LanguageSelector } from './shared/components/language-selector/language-selector';
+import { RegionSelector } from './shared/components/region-selector/region-selector';
 import { ToastHost } from './shared/components/toast/toast-host';
 
 interface NavItem {
@@ -13,7 +14,7 @@ interface NavItem {
 }
 
 @Component({
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoPipe, LanguageSelector, Icon, ToastHost],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoPipe, LanguageSelector, RegionSelector, Icon, ToastHost],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

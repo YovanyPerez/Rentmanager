@@ -46,6 +46,8 @@
 
         <span class="topbar__spacer"></span>
 
+        <app-region-selector />
+
         <app-language-selector />
 
         <div class="topbar__user">
@@ -76,6 +78,7 @@
 } @else {
   <div class="public-layout">
     <div class="public-layout__lang">
+      <app-region-selector />
       <app-language-selector />
     </div>
     <main id="main-content">

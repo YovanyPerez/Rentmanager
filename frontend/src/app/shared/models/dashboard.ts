@@ -1,3 +1,10 @@
+import { CurrencyCode } from './currency';
+
+export interface CurrencyTotal {
+  currency: CurrencyCode;
+  total: number;
+}
+
 export interface DashboardStats {
   totalProperties: number;
   availableProperties: number;
@@ -6,5 +13,5 @@ export interface DashboardStats {
   pendingPayments: number;
   overduePayments: number;
   openMaintenanceRequests: number;
-  monthlyIncome: number;
+  monthlyIncome: CurrencyTotal[];
 }

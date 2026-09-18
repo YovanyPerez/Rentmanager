@@ -1,3 +1,5 @@
+import { CurrencyCode } from './currency';
+
 export type PaymentStatus = 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED';
 
 export interface Payment {
@@ -7,6 +9,7 @@ export interface Payment {
   propertyAddress: string;
   tenantName: string;
   amount: number;
+  currency: CurrencyCode;
   dueDate: string;
   paidDate: string | null;
   status: PaymentStatus;

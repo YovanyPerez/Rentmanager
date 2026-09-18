@@ -33,7 +33,13 @@
       </article>
       <article class="kpi">
         <span class="kpi__label"><app-icon name="credit-card" [size]="16" />{{ 'dashboard.monthlyIncome' | transloco }}</span>
-        <span class="kpi__value">{{ data.monthlyIncome | number: '1.2-2' : i18n.lang() }}</span>
+        <span class="kpi__value">
+          @for (total of data.monthlyIncome; track total.currency) {
+            <span class="kpi__money">{{ total.total | money: total.currency : region.locale() }}</span>
+          } @empty {
+            <span class="kpi__money">{{ 0 | money: region.currency() : region.locale() }}</span>
+          }
+        </span>
       </article>
     } @else if (loading()) {
       <app-skeleton [height]="108" />
@@ -50,7 +56,7 @@
       <h2>{{ 'dashboard.incomeChart' | transloco }}</h2>
       <div class="chart">
         @for (month of chart(); track $index) {
-          <div class="chart__col" [title]="month.total | number: '1.2-2' : i18n.lang()">
+          <div class="chart__col" [title]="month.total | money: region.currency() : region.locale()">
             <div class="chart__bar" [style.height.%]="barHeight(month)"></div>
             <span class="chart__label">{{ month.label }}</span>
           </div>
@@ -71,8 +77,8 @@
                 <p class="list-row__meta">{{ payment.propertyAddress }}</p>
               </div>
               <div class="list-row__value">
-                {{ payment.amount | number: '1.2-2' : i18n.lang() }}
-                <p class="list-row__meta">{{ payment.dueDate | date: 'mediumDate' : undefined : i18n.lang() }}</p>
+                {{ payment.amount | money: payment.currency : region.locale() }}
+                <p class="list-row__meta">{{ payment.dueDate | date: 'mediumDate' : undefined : region.locale() }}</p>
               </div>
               <div class="list-row__badge">
                 <app-status-badge kind="payment" [status]="payment.status" />
@@ -99,7 +105,7 @@
               </p>
             </div>
             <div class="list-row__meta">
-              {{ request.createdAt | date: 'mediumDate' : undefined : i18n.lang() }}
+              {{ request.createdAt | date: 'mediumDate' : undefined : region.locale() }}
             </div>
             <div class="list-row__badge">
               <app-status-badge kind="maintenance" [status]="request.status" />

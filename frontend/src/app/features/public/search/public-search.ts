@@ -1,20 +1,20 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { LanguageService } from '../../../core/i18n/language.service';
+import { RegionService } from '../../../core/i18n/region.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
 import { SeoService } from '../../../core/seo/seo.service';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
 import { PropertyMedia } from '../../../shared/components/property-media/property-media';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
+import { MoneyPipe } from '../../../shared/pipes/money.pipe';
 import { PublicProperty } from '../../../shared/models/public-property';
 
 @Component({
   selector: 'app-public-search',
-  imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, PropertyMedia, Skeleton, EmptyState],
+  imports: [RouterLink, TranslocoPipe, ReactiveFormsModule, Icon, PropertyMedia, Skeleton, EmptyState, MoneyPipe],
   templateUrl: './public-search.html',
 })
 export class PublicSearch implements OnInit, OnDestroy {
@@ -23,7 +23,7 @@ export class PublicSearch implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly seo = inject(SeoService);
-  protected readonly i18n = inject(LanguageService);
+  protected readonly region = inject(RegionService);
 
   protected readonly results = signal<PublicProperty[]>([]);
   protected readonly loading = signal(true);
