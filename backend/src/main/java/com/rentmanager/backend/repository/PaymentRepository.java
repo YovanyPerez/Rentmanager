@@ -2,7 +2,6 @@ package com.rentmanager.backend.repository;
 
 import com.rentmanager.backend.domain.Payment;
 import com.rentmanager.backend.domain.PaymentStatus;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +37,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
   long countByStatusAndDueDateBefore(PaymentStatus status, LocalDate date);
 
-  @Query("select sum(p.amount) from Payment p where p.status = ?1 and p.paidDate between ?2 and ?3")
-  BigDecimal sumPaidBetween(PaymentStatus status, LocalDate from, LocalDate to);
+  @Query("""
+      select p.contract.currency as currency, sum(p.amount) as total
+      from Payment p
+      where p.status = ?1 and p.paidDate between ?2 and ?3
+      group by p.contract.currency
+      order by p.contract.currency
+      """)
+  List<CurrencyTotalView> sumPaidByCurrencyBetween(PaymentStatus status, LocalDate from, LocalDate to);
 }

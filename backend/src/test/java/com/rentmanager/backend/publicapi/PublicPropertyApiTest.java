@@ -78,6 +78,7 @@ class PublicPropertyApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.address").value("Calle Detalle 3"))
         .andExpect(jsonPath("$.monthlyRent").value(1000.00))
+        .andExpect(jsonPath("$.currency").value("COP"))
         .andExpect(jsonPath("$.imageUrl").value("/uploads/properties/demo-detail.png"))
         .andExpect(jsonPath("$.images.length()").value(1))
         .andExpect(jsonPath("$.status").value("AVAILABLE"))

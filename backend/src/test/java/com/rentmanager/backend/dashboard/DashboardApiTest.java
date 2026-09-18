@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.jayway.jsonpath.JsonPath;
 import com.rentmanager.backend.domain.Contract;
 import com.rentmanager.backend.domain.ContractStatus;
+import com.rentmanager.backend.domain.CurrencyCode;
 import com.rentmanager.backend.domain.MaintenanceRequest;
 import com.rentmanager.backend.domain.MaintenanceStatus;
 import com.rentmanager.backend.domain.Owner;
@@ -28,6 +29,9 @@ import com.rentmanager.backend.repository.TenantRepository;
 import com.rentmanager.backend.repository.UserRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -117,7 +121,7 @@ class DashboardApiTest {
     assertThat(after.pendingPayments() - before.pendingPayments()).isEqualTo(1);
     assertThat(after.overduePayments() - before.overduePayments()).isEqualTo(1);
     assertThat(after.openMaintenanceRequests() - before.openMaintenanceRequests()).isEqualTo(1);
-    assertThat(after.monthlyIncome() - before.monthlyIncome()).isEqualTo(500.0);
+    assertThat(after.income("COP") - before.income("COP")).isEqualTo(500.0);
   }
 
   @Test
@@ -132,7 +136,24 @@ class DashboardApiTest {
 
     Dashboard after = readDashboard(token);
 
-    assertThat(after.monthlyIncome() - before.monthlyIncome()).isEqualTo(0.0);
+    assertThat(after.income("COP") - before.income("COP")).isEqualTo(0.0);
+  }
+
+  @Test
+  void monthlyIncomeIsGroupedByCurrency() throws Exception {
+    String token = login(ADMIN, Role.ADMIN);
+    Dashboard before = readDashboard(token);
+
+    Property euroProperty = newProperty(newOwner(OWNER_USER), PropertyStatus.AVAILABLE);
+    euroProperty.setCurrency(CurrencyCode.EUR);
+    properties.save(euroProperty);
+    Contract contract = newContract(euroProperty, newTenant(TENANT_USER));
+    newPayment(contract, "300.00", LocalDate.now(), PaymentStatus.PAID, LocalDate.now());
+
+    Dashboard after = readDashboard(token);
+
+    assertThat(after.income("EUR") - before.income("EUR")).isEqualTo(300.0);
+    assertThat(after.income("COP") - before.income("COP")).isEqualTo(0.0);
   }
 
   private Dashboard readDashboard(String token) throws Exception {
@@ -140,6 +161,11 @@ class DashboardApiTest {
             .header("Authorization", "Bearer " + token))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
+    Map<String, Double> income = new HashMap<>();
+    List<Map<String, Object>> rows = JsonPath.read(response, "$.monthlyIncome");
+    for (Map<String, Object> row : rows) {
+      income.put((String) row.get("currency"), ((Number) row.get("total")).doubleValue());
+    }
     return new Dashboard(
         ((Number) JsonPath.read(response, "$.totalProperties")).longValue(),
         ((Number) JsonPath.read(response, "$.availableProperties")).longValue(),
@@ -148,12 +174,17 @@ class DashboardApiTest {
         ((Number) JsonPath.read(response, "$.pendingPayments")).longValue(),
         ((Number) JsonPath.read(response, "$.overduePayments")).longValue(),
         ((Number) JsonPath.read(response, "$.openMaintenanceRequests")).longValue(),
-        ((Number) JsonPath.read(response, "$.monthlyIncome")).doubleValue());
+        income);
   }
 
   private record Dashboard(long totalProperties, long availableProperties, long rentedProperties,
       long activeContracts, long pendingPayments, long overduePayments,
-      long openMaintenanceRequests, double monthlyIncome) {}
+      long openMaintenanceRequests, Map<String, Double> monthlyIncome) {
+
+    double income(String currency) {
+      return monthlyIncome.getOrDefault(currency, 0.0);
+    }
+  }
 
   private void newMaintenance(Property property, User createdBy, MaintenanceStatus status) {
     MaintenanceRequest request = new MaintenanceRequest();
@@ -182,6 +213,7 @@ class DashboardApiTest {
     contract.setStartDate(LocalDate.of(2030, 1, 1));
     contract.setEndDate(LocalDate.of(2030, 12, 31));
     contract.setMonthlyRent(new BigDecimal("1000.00"));
+    contract.setCurrency(property.getCurrency());
     contract.setStatus(ContractStatus.ACTIVE);
     return contracts.save(contract);
   }

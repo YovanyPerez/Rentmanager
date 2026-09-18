@@ -282,12 +282,12 @@ Identical to owners, with role `TENANT` required for the link and:
 | DELETE | `/api/properties/{id}` | ADMIN | — | `204` (deactivates → `INACTIVE`); `409` if `RENTED` |
 
 ```json
-// PropertyRequest  (description optional; monthlyRent > 0, 2 decimals, max 8 integer digits)
-{ "ownerId": 1, "address": "Calle Mayor 12, 3ºA", "city": "Madrid", "description": null, "monthlyRent": 1200.00 }
+// PropertyRequest  (description optional; currency COP/EUR/MXN/USD, defaults to COP; monthlyRent > 0, 2 decimals, max 8 integer digits)
+{ "ownerId": 1, "address": "Carrera 7 # 45-12, Apto 302", "city": "Bogotá", "description": null, "currency": "COP", "monthlyRent": 1800000.00 }
 
 // PropertyResponse
-{ "id": 1, "ownerId": 1, "ownerName": "Ana Propietaria", "address": "Calle Mayor 12, 3ºA",
-  "city": "Madrid", "description": null, "monthlyRent": 1200.00, "status": "AVAILABLE",
+{ "id": 1, "ownerId": 1, "ownerName": "Ana Propietaria", "address": "Carrera 7 # 45-12, Apto 302",
+  "city": "Bogotá", "description": null, "monthlyRent": 1800000.00, "currency": "COP", "status": "AVAILABLE",
   "createdAt": "...", "updatedAt": "..." }
 ```
 
@@ -308,9 +308,9 @@ Identical to owners, with role `TENANT` required for the link and:
 { "propertyId": 1, "tenantId": 1, "startDate": "2030-01-01", "endDate": "2030-12-31", "monthlyRent": 1200.00 }
 
 // ContractResponse
-{ "id": 34, "propertyId": 1, "propertyAddress": "Calle Mayor 12, 3ºA", "tenantId": 1,
+{ "id": 34, "propertyId": 1, "propertyAddress": "Carrera 7 # 45-12, Apto 302", "tenantId": 1,
   "tenantName": "Tomás Inquilino", "startDate": "2030-01-01", "endDate": "2030-12-31",
-  "monthlyRent": 1200.00, "status": "ACTIVE", "createdAt": "...", "updatedAt": "..." }
+  "monthlyRent": 1800000.00, "currency": "COP", "status": "ACTIVE", "createdAt": "...", "updatedAt": "..." }
 ```
 
 ### 6.7 Payments
@@ -330,8 +330,8 @@ Identical to owners, with role `TENANT` required for the link and:
 { "status": "PAID", "paidDate": "2030-01-20" }
 
 // PaymentResponse
-{ "id": 161, "contractId": 34, "propertyId": 1, "propertyAddress": "Calle Mayor 12, 3ºA",
-  "tenantName": "Tomás Inquilino", "amount": 1200.00, "dueDate": "2030-01-01",
+{ "id": 161, "contractId": 34, "propertyId": 1, "propertyAddress": "Carrera 7 # 45-12, Apto 302",
+  "tenantName": "Tomás Inquilino", "amount": 1800000.00, "currency": "COP", "dueDate": "2030-01-01",
   "paidDate": null, "status": "PENDING", "createdAt": "...", "updatedAt": "..." }
 ```
 
@@ -359,8 +359,11 @@ GET /api/dashboard
 
 ```json
 { "totalProperties": 2, "availableProperties": 1, "rentedProperties": 0, "activeContracts": 0,
-  "pendingPayments": 0, "overduePayments": 0, "openMaintenanceRequests": 0, "monthlyIncome": 0 }
+  "pendingPayments": 0, "overduePayments": 0, "openMaintenanceRequests": 0,
+  "monthlyIncome": [{ "currency": "COP", "total": 1800000.00 }] }
 ```
+
+`monthlyIncome` is the amount collected this month (PAID payments with a paid date inside the current month), **grouped by currency**: there is no FX conversion, so multi-currency portfolios are never summed together.
 
 ### 6.10 Public properties (anonymous)
 
@@ -372,8 +375,8 @@ Used by the public landing, search and detail pages. Only properties in `AVAILAB
 | GET | `/api/public/properties/{id}` | — | `200 PublicPropertyResponse`; `404 PROPERTY_NOT_FOUND` when it does not exist **or is not available** |
 
 ```json
-{ "id": 1, "address": "Calle Mayor 12, 3ºA", "city": "Madrid", "description": null,
-  "monthlyRent": 1200.00, "status": "AVAILABLE" }
+{ "id": 1, "address": "Carrera 7 # 45-12, Apto 302", "city": "Bogotá", "description": null,
+  "monthlyRent": 1800000.00, "currency": "COP", "status": "AVAILABLE" }
 ```
 
 ---

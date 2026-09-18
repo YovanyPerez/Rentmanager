@@ -1,6 +1,6 @@
 package com.rentmanager.backend.dashboard;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 public record DashboardResponse(
     long totalProperties,
@@ -10,4 +10,4 @@ public record DashboardResponse(
     long pendingPayments,
     long overduePayments,
     long openMaintenanceRequests,
-    BigDecimal monthlyIncome) {}
+    List<CurrencyTotal> monthlyIncome) {}

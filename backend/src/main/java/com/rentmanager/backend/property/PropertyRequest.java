@@ -1,5 +1,6 @@
 package com.rentmanager.backend.property;
 
+import com.rentmanager.backend.domain.CurrencyCode;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -13,4 +14,5 @@ public record PropertyRequest(
     @NotBlank @Size(max = 255) String address,
     @NotBlank @Size(max = 100) String city,
     @Size(max = 2000) String description,
+    CurrencyCode currency,
     @NotNull @DecimalMin("0.01") @Digits(integer = 8, fraction = 2) BigDecimal monthlyRent) {}

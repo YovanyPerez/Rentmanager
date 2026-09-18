@@ -5,11 +5,12 @@ import com.rentmanager.backend.domain.MaintenanceStatus;
 import com.rentmanager.backend.domain.PaymentStatus;
 import com.rentmanager.backend.domain.PropertyStatus;
 import com.rentmanager.backend.repository.ContractRepository;
+import com.rentmanager.backend.repository.CurrencyTotalView;
 import com.rentmanager.backend.repository.MaintenanceRequestRepository;
 import com.rentmanager.backend.repository.PaymentRepository;
 import com.rentmanager.backend.repository.PropertyRepository;
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +32,17 @@ public class DashboardService {
 
   /**
    * Statistics defined in AGENTS.md section 14. Monthly income is the amount collected
-   * this month (payments marked PAID with a paid date inside the current month).
+   * this month (payments marked PAID with a paid date inside the current month), grouped
+   * by currency: there is no FX conversion, so totals are never mixed.
    */
   @Transactional(readOnly = true)
   public DashboardResponse statistics() {
     LocalDate today = LocalDate.now();
-    BigDecimal collected = payments.sumPaidBetween(
-        PaymentStatus.PAID, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth()));
+    List<CurrencyTotal> collected = payments.sumPaidByCurrencyBetween(
+            PaymentStatus.PAID, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth()))
+        .stream()
+        .map(view -> new CurrencyTotal(view.getCurrency().name(), view.getTotal()))
+        .toList();
     return new DashboardResponse(
         properties.count(),
         properties.countByStatus(PropertyStatus.AVAILABLE),
@@ -47,6 +52,6 @@ public class DashboardService {
         payments.countByStatus(PaymentStatus.OVERDUE)
             + payments.countByStatusAndDueDateBefore(PaymentStatus.PENDING, today),
         maintenance.countByStatus(MaintenanceStatus.OPEN),
-        collected == null ? BigDecimal.ZERO : collected);
+        collected);
   }
 }

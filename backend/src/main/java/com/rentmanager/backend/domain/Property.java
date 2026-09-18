@@ -39,6 +39,10 @@ public class Property {
   private BigDecimal monthlyRent;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 3)
+  private CurrencyCode currency = CurrencyCode.COP;
+
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
   private PropertyStatus status = PropertyStatus.AVAILABLE;
 
@@ -90,6 +94,14 @@ public class Property {
 
   public void setMonthlyRent(BigDecimal monthlyRent) {
     this.monthlyRent = monthlyRent;
+  }
+
+  public CurrencyCode getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(CurrencyCode currency) {
+    this.currency = currency;
   }
 
   public PropertyStatus getStatus() {

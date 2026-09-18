@@ -16,6 +16,7 @@ public record PropertyResponse(
     String imageUrl,
     List<PropertyImageResponse> images,
     BigDecimal monthlyRent,
+    String currency,
     String status,
     Instant createdAt,
     Instant updatedAt) {
@@ -32,6 +33,7 @@ public record PropertyResponse(
         mapped.isEmpty() ? null : mapped.get(0).url(),
         mapped,
         property.getMonthlyRent(),
+        property.getCurrency().name(),
         property.getStatus().name(),
         property.getCreatedAt(),
         property.getUpdatedAt());

@@ -284,6 +284,39 @@ class PropertyApiTest {
         .andExpect(jsonPath("$.images.length()").value(0));
   }
 
+  @Test
+  void propertyCurrencyIsStoredAndDefaultsToCop() throws Exception {
+    long ownerId = createOwner(OWNER);
+    String token = login(ADMIN, Role.ADMIN);
+
+    mockMvc.perform(post("/api/properties")
+            .header("Authorization", "Bearer " + token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Con moneda","city":"Bogotá","currency":"EUR","monthlyRent":900.00}
+                """.formatted(ownerId)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.currency").value("EUR"));
+
+    mockMvc.perform(post("/api/properties")
+            .header("Authorization", "Bearer " + token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Sin moneda","city":"Bogotá","monthlyRent":900.00}
+                """.formatted(ownerId)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.currency").value("COP"));
+
+    mockMvc.perform(post("/api/properties")
+            .header("Authorization", "Bearer " + token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Moneda rara","city":"X","currency":"GBP","monthlyRent":100.00}
+                """.formatted(ownerId)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.code").value("BAD_REQUEST"));
+  }
+
   private void patchStatus(String token, long propertyId, String status, int expected) throws Exception {
     mockMvc.perform(patch("/api/properties/{id}/status", propertyId)
             .header("Authorization", "Bearer " + token)

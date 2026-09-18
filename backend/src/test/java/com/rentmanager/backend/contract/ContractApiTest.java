@@ -83,7 +83,8 @@ class ContractApiTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.status").value("DRAFT"))
         .andExpect(jsonPath("$.propertyId").value(property.getId()))
-        .andExpect(jsonPath("$.tenantId").value(tenant.getId()));
+        .andExpect(jsonPath("$.tenantId").value(tenant.getId()))
+        .andExpect(jsonPath("$.currency").value("COP"));
   }
 
   @Test

@@ -14,6 +14,7 @@ public record ContractResponse(
     LocalDate startDate,
     LocalDate endDate,
     BigDecimal monthlyRent,
+    String currency,
     String status,
     Instant createdAt,
     Instant updatedAt) {
@@ -28,6 +29,7 @@ public record ContractResponse(
         contract.getStartDate(),
         contract.getEndDate(),
         contract.getMonthlyRent(),
+        contract.getCurrency().name(),
         contract.getStatus().name(),
         contract.getCreatedAt(),
         contract.getUpdatedAt());

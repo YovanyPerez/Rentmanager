@@ -47,6 +47,7 @@ CREATE TABLE properties (
   city         VARCHAR(100)   NOT NULL,
   description  VARCHAR(2000)  NULL,
   monthly_rent DECIMAL(10, 2) NOT NULL,
+  currency     VARCHAR(3)     NOT NULL DEFAULT 'COP',
   status       VARCHAR(20)    NOT NULL DEFAULT 'AVAILABLE',
   created_at   TIMESTAMP(6)   NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   updated_at   TIMESTAMP(6)   NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
@@ -55,7 +56,8 @@ CREATE TABLE properties (
   KEY idx_properties_status (status),
   CONSTRAINT fk_properties_owner FOREIGN KEY (owner_id) REFERENCES owners (id),
   CONSTRAINT chk_properties_rent_positive CHECK (monthly_rent > 0),
-  CONSTRAINT chk_properties_status CHECK (status IN ('AVAILABLE', 'RENTED', 'MAINTENANCE', 'INACTIVE'))
+  CONSTRAINT chk_properties_status CHECK (status IN ('AVAILABLE', 'RENTED', 'MAINTENANCE', 'INACTIVE')),
+  CONSTRAINT chk_properties_currency CHECK (currency IN ('COP', 'EUR', 'MXN', 'USD'))
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 CREATE TABLE property_images (
@@ -78,6 +80,7 @@ CREATE TABLE contracts (
   start_date         DATE           NOT NULL,
   end_date           DATE           NOT NULL,
   monthly_rent       DECIMAL(10, 2) NOT NULL,
+  currency           VARCHAR(3)     NOT NULL DEFAULT 'COP',
   status             VARCHAR(15)    NOT NULL DEFAULT 'DRAFT',
   -- Enforces: at most one ACTIVE contract per property (NULLs are not indexed as duplicates by MySQL).
   active_property_id BIGINT GENERATED ALWAYS AS (IF(status = 'ACTIVE', property_id, NULL)) STORED,
@@ -92,7 +95,8 @@ CREATE TABLE contracts (
   CONSTRAINT fk_contracts_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id),
   CONSTRAINT chk_contracts_dates CHECK (start_date < end_date),
   CONSTRAINT chk_contracts_rent_positive CHECK (monthly_rent > 0),
-  CONSTRAINT chk_contracts_status CHECK (status IN ('DRAFT', 'ACTIVE', 'EXPIRED', 'TERMINATED'))
+  CONSTRAINT chk_contracts_status CHECK (status IN ('DRAFT', 'ACTIVE', 'EXPIRED', 'TERMINATED')),
+  CONSTRAINT chk_contracts_currency CHECK (currency IN ('COP', 'EUR', 'MXN', 'USD'))
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 CREATE TABLE payments (

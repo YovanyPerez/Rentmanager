@@ -144,6 +144,7 @@ public class ContractService {
     contract.setStartDate(request.startDate());
     contract.setEndDate(request.endDate());
     contract.setMonthlyRent(request.monthlyRent());
+    contract.setCurrency(contract.getProperty().getCurrency());
   }
 
   private Contract find(Long id) {

@@ -1,5 +1,6 @@
 package com.rentmanager.backend.property;
 
+import com.rentmanager.backend.domain.CurrencyCode;
 import com.rentmanager.backend.domain.Owner;
 import com.rentmanager.backend.domain.Property;
 import com.rentmanager.backend.domain.PropertyImage;
@@ -70,6 +71,7 @@ public class PropertyService {
     Property property = new Property();
     property.setOwner(findOwner(request.ownerId()));
     applyRequest(property, request);
+    property.setCurrency(request.currency() == null ? CurrencyCode.COP : request.currency());
     property.setStatus(PropertyStatus.AVAILABLE);
     properties.save(property);
     return PropertyResponse.from(property, List.of());
@@ -90,6 +92,9 @@ public class PropertyService {
       if (!property.getOwner().getId().equals(request.ownerId())) {
         throw new ApiException(ErrorCode.FORBIDDEN);
       }
+    }
+    if (request.currency() != null) {
+      property.setCurrency(request.currency());
     }
     applyRequest(property, request);
     return PropertyResponse.from(property, imageService.byPropertyId(property.getId()));

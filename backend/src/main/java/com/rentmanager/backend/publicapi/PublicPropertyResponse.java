@@ -15,6 +15,7 @@ public record PublicPropertyResponse(
     String imageUrl,
     List<PropertyImageResponse> images,
     BigDecimal monthlyRent,
+    String currency,
     String status) {
 
   static PublicPropertyResponse from(Property property, List<PropertyImage> images) {
@@ -27,6 +28,7 @@ public record PublicPropertyResponse(
         mapped.isEmpty() ? null : mapped.get(0).url(),
         mapped,
         property.getMonthlyRent(),
+        property.getCurrency().name(),
         property.getStatus().name());
   }
 }

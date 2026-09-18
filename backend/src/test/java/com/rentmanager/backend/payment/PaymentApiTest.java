@@ -93,6 +93,7 @@ class PaymentApiTest {
 
     assertThat(ownPayments).hasSize(3);
     assertThat(ownPayments).allMatch(payment -> "PENDING".equals(payment.get("status")));
+    assertThat(ownPayments).allMatch(payment -> "COP".equals(payment.get("currency")));
   }
 
   @Test
@@ -108,6 +109,7 @@ class PaymentApiTest {
                 """.formatted(contract.getId())))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.status").value("PENDING"))
+        .andExpect(jsonPath("$.currency").value("COP"))
         .andExpect(jsonPath("$.paidDate").doesNotExist());
   }
 

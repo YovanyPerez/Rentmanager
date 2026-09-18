@@ -41,6 +41,10 @@ public class Contract {
   private BigDecimal monthlyRent;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 3)
+  private CurrencyCode currency = CurrencyCode.COP;
+
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 15)
   private ContractStatus status = ContractStatus.DRAFT;
 
@@ -92,6 +96,14 @@ public class Contract {
 
   public void setMonthlyRent(BigDecimal monthlyRent) {
     this.monthlyRent = monthlyRent;
+  }
+
+  public CurrencyCode getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(CurrencyCode currency) {
+    this.currency = currency;
   }
 
   public ContractStatus getStatus() {
