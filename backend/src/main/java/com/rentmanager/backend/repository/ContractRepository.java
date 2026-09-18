@@ -5,17 +5,24 @@ import com.rentmanager.backend.domain.ContractStatus;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContractRepository extends JpaRepository<Contract, Long> {
 
+  @Override
+  @EntityGraph(attributePaths = {"property", "tenant"})
+  List<Contract> findAll();
+
+  @Override
+  @EntityGraph(attributePaths = {"property", "tenant"})
+  Optional<Contract> findById(Long id);
+
+  @EntityGraph(attributePaths = {"property", "tenant"})
   List<Contract> findAllByPropertyOwnerUserId(Long userId);
 
+  @EntityGraph(attributePaths = {"property", "tenant"})
   List<Contract> findAllByTenantUserId(Long userId);
-
-  Optional<Contract> findByIdAndPropertyOwnerUserId(Long id, Long userId);
-
-  Optional<Contract> findByIdAndTenantUserId(Long id, Long userId);
 
   List<Contract> findAllByStatusAndEndDateBefore(ContractStatus status, LocalDate date);
 

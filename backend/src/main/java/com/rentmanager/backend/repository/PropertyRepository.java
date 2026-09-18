@@ -4,15 +4,23 @@ import com.rentmanager.backend.domain.Property;
 import com.rentmanager.backend.domain.PropertyStatus;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
-  List<Property> findAllByOwnerUserId(Long userId);
+  @Override
+  @EntityGraph(attributePaths = {"owner", "owner.user"})
+  List<Property> findAll();
 
-  Optional<Property> findByIdAndOwnerUserId(Long id, Long userId);
+  @Override
+  @EntityGraph(attributePaths = {"owner", "owner.user"})
+  Optional<Property> findById(Long id);
+
+  @EntityGraph(attributePaths = {"owner", "owner.user"})
+  List<Property> findAllByOwnerUserId(Long userId);
 
   boolean existsByOwnerId(Long ownerId);
 

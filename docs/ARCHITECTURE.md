@@ -111,7 +111,7 @@ RENTED      → AVAILABLE     (contract terminated or expired)
 
 - Manual `→ RENTED` is rejected with `409 INVALID_STATE_TRANSITION`.
 - `RENTED → MAINTENANCE/INACTIVE` is not allowed while a contract is active.
-- `DELETE /api/properties/{id}` does not delete: it deactivates (`INACTIVE`). A `RENTED` property cannot be deactivated (`409`).
+- `DELETE /api/properties/{id}` does not delete: it deactivates (`INACTIVE`). A `RENTED` property cannot be deactivated (`409`). Deactivation is ADMIN-only; owners can edit their own properties (data and status) but cannot reassign the owner, create or deactivate.
 
 ### 4.2 Contract lifecycle
 
@@ -181,7 +181,7 @@ IN_PROGRESS → CANCELLED
 ### 5.2 Role model
 
 - `ADMIN` — manages everything (properties, owners, tenants, contracts, payments, maintenance, users list, dashboard).
-- `OWNER` — read-only over their own data: their properties, contracts of their properties, payments of their properties, maintenance requests of their properties.
+- `OWNER` — their own data: can edit their own properties (data and status, never reassign the owner) and read their contracts, payments and maintenance requests.
 - `TENANT` — read-only over their own data: their contracts, their payments, their maintenance requests; can create maintenance requests for properties they rent.
 
 ### 5.3 Endpoint permission matrix
@@ -194,7 +194,8 @@ IN_PROGRESS → CANCELLED
 | `/api/owners/**`, `/api/tenants/**` (all methods) | ✓ | — | — | — |
 | `GET /api/properties` | all | own only | — | — |
 | `GET /api/properties/{id}` | any | own only (403 otherwise) | — | — |
-| `POST/PUT/PATCH/DELETE /api/properties/**` | ✓ | — | — | — |
+| `POST`, `DELETE /api/properties/**` | ✓ | — | — | — |
+| `PUT`, `PATCH /api/properties/**` | any | own only (data + status; owner cannot be reassigned) | — | — |
 | `GET /api/contracts`, `GET /api/contracts/{id}` | all | own properties | own contracts | — |
 | `POST/PUT/DELETE /api/contracts/**`, `POST .../activate`, `POST .../terminate` | ✓ | — | — | — |
 | `GET /api/payments`, `GET /api/payments/{id}` | all | own properties | own contracts | — |

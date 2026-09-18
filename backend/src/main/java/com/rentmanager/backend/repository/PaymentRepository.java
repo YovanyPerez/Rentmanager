@@ -6,24 +6,31 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
+
+  @Override
+  @EntityGraph(attributePaths = {"contract", "contract.property", "contract.tenant"})
+  List<Payment> findAll();
+
+  @Override
+  @EntityGraph(attributePaths = {"contract", "contract.property", "contract.tenant"})
+  Optional<Payment> findById(Long id);
+
+  @EntityGraph(attributePaths = {"contract", "contract.property", "contract.tenant"})
+  List<Payment> findAllByContractPropertyOwnerUserId(Long userId);
+
+  @EntityGraph(attributePaths = {"contract", "contract.property", "contract.tenant"})
+  List<Payment> findAllByContractTenantUserId(Long userId);
 
   long countByContractId(Long contractId);
 
   boolean existsByContractIdAndDueDate(Long contractId, LocalDate dueDate);
 
   List<Payment> findAllByStatusAndDueDateBefore(PaymentStatus status, LocalDate date);
-
-  List<Payment> findAllByContractPropertyOwnerUserId(Long userId);
-
-  List<Payment> findAllByContractTenantUserId(Long userId);
-
-  Optional<Payment> findByIdAndContractPropertyOwnerUserId(Long id, Long userId);
-
-  Optional<Payment> findByIdAndContractTenantUserId(Long id, Long userId);
 
   long countByStatus(PaymentStatus status);
 

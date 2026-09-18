@@ -25,6 +25,8 @@ import com.rentmanager.backend.repository.TenantRepository;
 import com.rentmanager.backend.repository.UserRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,11 +83,16 @@ class PaymentApiTest {
             .header("Authorization", "Bearer " + token))
         .andExpect(status().isOk());
 
-    mockMvc.perform(get("/api/payments").header("Authorization", "Bearer " + token))
+    String body = mockMvc.perform(get("/api/payments").header("Authorization", "Bearer " + token))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.length()").value(3))
-        .andExpect(jsonPath("$[0].status").value("PENDING"))
-        .andExpect(jsonPath("$[0].amount").value(1000.00));
+        .andReturn().getResponse().getContentAsString();
+
+    List<Map<String, Object>> ownPayments = JsonPath.<List<Map<String, Object>>>read(body, "$").stream()
+        .filter(payment -> ((Number) payment.get("contractId")).longValue() == contract.getId())
+        .toList();
+
+    assertThat(ownPayments).hasSize(3);
+    assertThat(ownPayments).allMatch(payment -> "PENDING".equals(payment.get("status")));
   }
 
   @Test

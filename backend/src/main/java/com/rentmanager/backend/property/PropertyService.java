@@ -29,7 +29,6 @@ public class PropertyService {
       PropertyStatus.MAINTENANCE, Set.of(PropertyStatus.AVAILABLE),
       PropertyStatus.INACTIVE, Set.of(PropertyStatus.AVAILABLE),
       PropertyStatus.RENTED, Set.of(PropertyStatus.AVAILABLE));
-
   private final PropertyRepository properties;
   private final OwnerRepository owners;
   private final PropertyImageService imageService;
@@ -79,8 +78,18 @@ public class PropertyService {
   @Transactional
   public PropertyResponse update(Long id, PropertyRequest request) {
     Property property = find(id);
-    if (!property.getOwner().getId().equals(request.ownerId())) {
-      property.setOwner(findOwner(request.ownerId()));
+    User user = currentUser.get();
+    if (user.getRole() == Role.ADMIN) {
+      if (!property.getOwner().getId().equals(request.ownerId())) {
+        property.setOwner(findOwner(request.ownerId()));
+      }
+    } else {
+      if (!isOwnedBy(property, user)) {
+        throw new ApiException(ErrorCode.FORBIDDEN);
+      }
+      if (!property.getOwner().getId().equals(request.ownerId())) {
+        throw new ApiException(ErrorCode.FORBIDDEN);
+      }
     }
     applyRequest(property, request);
     return PropertyResponse.from(property, imageService.byPropertyId(property.getId()));
@@ -89,6 +98,10 @@ public class PropertyService {
   @Transactional
   public PropertyResponse changeStatus(Long id, PropertyStatus target) {
     Property property = find(id);
+    User user = currentUser.get();
+    if (user.getRole() != Role.ADMIN && !isOwnedBy(property, user)) {
+      throw new ApiException(ErrorCode.FORBIDDEN);
+    }
     List<PropertyImage> images = imageService.byPropertyId(property.getId());
     PropertyStatus current = property.getStatus();
     if (current == target) {
