@@ -1,0 +1,48 @@
+<div class="page">
+  <a class="btn btn--ghost" routerLink="/search">
+    <app-icon name="arrow-right" [size]="16" style="transform: rotate(180deg)" />
+    <span>{{ 'detail.back' | transloco }}</span>
+  </a>
+
+  @if (loading()) {
+    <div style="height: 20px"></div>
+    <app-skeleton [height]="320" />
+  } @else if (notFound() || !property()) {
+    <div style="height: 20px"></div>
+    <app-empty-state icon="building" titleKey="detail.unavailable" hintKey="detail.unavailableHint">
+      <a class="btn btn--secondary" routerLink="/search">{{ 'detail.back' | transloco }}</a>
+    </app-empty-state>
+  } @else if (property(); as item) {
+    <div class="detail-layout">
+      <div class="entity-card">
+        <div class="entity-card__media detail-layout__media">
+          <app-icon name="building" [size]="56" />
+          <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h1>{{ item.address }}</h1>
+        <p class="entity-card__meta"><app-icon name="map-pin" [size]="14" /> {{ item.city }}</p>
+        <p class="entity-card__price">
+          {{ item.monthlyRent | number: '1.2-2' : i18n.lang() }}
+          <span>{{ 'properties.perMonth' | transloco }}</span>
+        </p>
+
+        @if (item.description) {
+          <h2>{{ 'detail.description' | transloco }}</h2>
+          <p>{{ item.description }}</p>
+        }
+
+        <div class="detail-layout__cta">
+          <h2>{{ 'detail.consult' | transloco }}</h2>
+          <p class="entity-card__meta">{{ 'detail.consultHint' | transloco }}</p>
+          <div class="detail-layout__actions">
+            <a class="btn btn--primary" routerLink="/register">{{ 'nav.register' | transloco }}</a>
+            <a class="btn btn--secondary" routerLink="/login">{{ 'nav.login' | transloco }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

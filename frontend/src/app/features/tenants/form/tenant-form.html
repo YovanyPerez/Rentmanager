@@ -1,0 +1,35 @@
+<section class="page">
+  <h1>{{ (id() === null ? 'tenants.new' : 'tenants.edit') | transloco }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="fullName">{{ 'tenants.fullName' | transloco }}</label>
+    <input id="fullName" type="text" formControlName="fullName" />
+    @if (fieldError('fullName'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="email">{{ 'tenants.email' | transloco }}</label>
+    <input id="email" type="email" formControlName="email" />
+    @if (fieldError('email'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="phone">{{ 'tenants.phone' | transloco }}</label>
+    <input id="phone" type="tel" formControlName="phone" />
+
+    <label for="userId">{{ 'tenants.linkedUser' | transloco }}</label>
+    <select id="userId" formControlName="userId">
+      <option [ngValue]="null">{{ 'tenants.noUser' | transloco }}</option>
+      @for (user of users(); track user.id) {
+        <option [ngValue]="user.id">{{ user.fullName }} ({{ user.email }})</option>
+      }
+    </select>
+
+    @if (errorKey(); as key) {
+      <p class="form-error">{{ key | transloco }}</p>
+    }
+
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">{{ 'common.save' | transloco }}</button>
+    <a class="btn btn--secondary" routerLink="/tenants">{{ 'common.cancel' | transloco }}</a>
+  </form>
+</section>

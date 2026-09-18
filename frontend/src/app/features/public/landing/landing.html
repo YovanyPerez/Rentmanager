@@ -1,0 +1,97 @@
+<div class="landing">
+  <header class="landing__nav">
+    <a class="auth__brand" routerLink="/">
+      <span class="auth__mark"><app-icon name="building" [size]="18" /></span>
+      <span>{{ 'app.title' | transloco }}</span>
+    </a>
+    <nav class="landing__nav-links">
+      <a routerLink="/search">{{ 'nav.properties' | transloco }}</a>
+    </nav>
+    <div class="landing__actions">
+      <a class="btn btn--ghost" routerLink="/login">{{ 'nav.login' | transloco }}</a>
+      <a class="btn btn--primary" routerLink="/register">{{ 'nav.register' | transloco }}</a>
+    </div>
+  </header>
+
+  <section class="landing__hero">
+    <div class="landing__hero-inner">
+      <h1>{{ 'landing.heroTitle' | transloco }}</h1>
+      <p class="landing__hero-sub">{{ 'landing.heroSubtitle' | transloco }}</p>
+
+      <form class="landing__search" [formGroup]="searchForm" (ngSubmit)="search()">
+        <div class="field">
+          <app-icon name="search" [size]="16" />
+          <input type="search" formControlName="query" [placeholder]="'landing.searchPlaceholder' | transloco" />
+        </div>
+        <button type="submit" class="btn btn--primary">{{ 'landing.searchButton' | transloco }}</button>
+      </form>
+
+      <div class="landing__features">
+        <div class="landing__feature">
+          <app-icon name="building" [size]="20" />
+          <span>{{ 'landing.featureManagement' | transloco }}</span>
+        </div>
+        <div class="landing__feature">
+          <app-icon name="credit-card" [size]="20" />
+          <span>{{ 'landing.featurePayments' | transloco }}</span>
+        </div>
+        <div class="landing__feature">
+          <app-icon name="wrench" [size]="20" />
+          <span>{{ 'landing.featureMaintenance' | transloco }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="landing__hero-media">
+      <app-icon name="building" [size]="72" />
+    </div>
+  </section>
+
+  <section class="landing__section">
+    <div class="landing__section-head">
+      <h2>{{ 'landing.featured' | transloco }}</h2>
+      <a routerLink="/search">{{ 'landing.viewAll' | transloco }}</a>
+    </div>
+
+    @if (loading()) {
+      <div class="card-grid">
+        @for (item of [1, 2, 3, 4]; track item) {
+          <app-skeleton [height]="260" />
+        }
+      </div>
+    } @else if (featured().length === 0) {
+      <p class="entity-card__meta">{{ 'landing.noProperties' | transloco }}</p>
+    } @else {
+      <div class="card-grid">
+        @for (property of featured(); track property.id) {
+          <a class="entity-card" [routerLink]="['/property', property.id]" animate.enter="enter-animation">
+            <div class="entity-card__media">
+              <app-icon name="building" [size]="36" />
+              <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>
+            </div>
+            <div class="entity-card__body">
+              <h3 class="entity-card__title">{{ property.address }}</h3>
+              <p class="entity-card__meta"><app-icon name="map-pin" [size]="14" /> {{ property.city }}</p>
+              <p class="entity-card__price">
+                {{ property.monthlyRent | number: '1.2-2' : i18n.lang() }}
+                <span>{{ 'properties.perMonth' | transloco }}</span>
+              </p>
+            </div>
+          </a>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="landing__cta">
+    <div>
+      <h2>{{ 'landing.ctaTitle' | transloco }}</h2>
+      <p>{{ 'landing.ctaSubtitle' | transloco }}</p>
+    </div>
+    <a class="btn btn--primary" routerLink="/register">{{ 'landing.ctaButton' | transloco }}</a>
+  </section>
+
+  <footer class="landing__footer">
+    <span>© {{ year }} RentManager</span>
+    <span>{{ 'landing.footerNote' | transloco }}</span>
+  </footer>
+</div>

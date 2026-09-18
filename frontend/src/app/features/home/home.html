@@ -1,0 +1,28 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'home.title' | transloco }}</h1>
+      @if (auth.user(); as user) {
+        <p class="entity-card__meta">
+          {{ 'auth.welcome' | transloco: { name: user.fullName } }} ·
+          {{ 'auth.role' | transloco }}: {{ 'enums.role.' + user.role | transloco }}
+        </p>
+      }
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>{{ 'home.quickAccess' | transloco }}</h2>
+    <div class="card-grid">
+      @for (link of links(); track link.path) {
+        <a class="entity-card quick-card" [routerLink]="link.path" animate.enter="enter-animation">
+          <div class="entity-card__body">
+            <span class="quick-card__icon"><app-icon [name]="link.icon" [size]="20" /></span>
+            <h3 class="entity-card__title">{{ link.key | transloco }}</h3>
+            <span class="quick-card__arrow"><app-icon name="arrow-right" [size]="16" /></span>
+          </div>
+        </a>
+      }
+    </div>
+  </section>
+</div>

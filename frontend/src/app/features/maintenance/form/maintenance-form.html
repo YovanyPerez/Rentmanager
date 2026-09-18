@@ -1,0 +1,32 @@
+<section class="page">
+  <h1>{{ 'maintenance.new' | transloco }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="propertyId">{{ 'maintenance.property' | transloco }}</label>
+    <select id="propertyId" formControlName="propertyId">
+      <option [ngValue]="0" disabled>{{ 'maintenance.selectProperty' | transloco }}</option>
+      @for (property of propertyOptions(); track property.id) {
+        <option [ngValue]="property.id">{{ property.label }}</option>
+      }
+    </select>
+    @if (fieldError('propertyId'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="title">{{ 'maintenance.subject' | transloco }}</label>
+    <input id="title" type="text" formControlName="title" />
+    @if (fieldError('title'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="description">{{ 'maintenance.description' | transloco }}</label>
+    <textarea id="description" formControlName="description"></textarea>
+
+    @if (errorKey(); as key) {
+      <p class="form-error">{{ key | transloco }}</p>
+    }
+
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">{{ 'common.save' | transloco }}</button>
+    <a class="btn btn--secondary" routerLink="/maintenance">{{ 'common.cancel' | transloco }}</a>
+  </form>
+</section>

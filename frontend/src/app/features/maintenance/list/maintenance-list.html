@@ -1,0 +1,88 @@
+<div class="page">
+  <div class="page-header">
+    <h1>{{ 'maintenance.title' | transloco }}</h1>
+    @if (auth.role() === 'ADMIN' || auth.role() === 'TENANT') {
+      <a class="btn btn--primary" routerLink="/maintenance/new">
+        <app-icon name="plus" [size]="16" />
+        <span>{{ 'maintenance.new' | transloco }}</span>
+      </a>
+    }
+  </div>
+
+  @if (errorKey(); as key) {
+    <p class="form-error">{{ key | transloco }}</p>
+  }
+
+  <div class="toolbar">
+    <div class="field">
+      <app-icon name="search" [size]="16" />
+      <input
+        type="search"
+        [placeholder]="'common.search' | transloco"
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+      />
+    </div>
+    <select [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
+      <option value="ALL">{{ 'common.all' | transloco }}</option>
+      @for (status of statuses; track status) {
+        <option [value]="status">{{ 'enums.maintenanceStatus.' + status | transloco }}</option>
+      }
+    </select>
+  </div>
+
+  @if (loading()) {
+    <app-skeleton [height]="240" />
+  } @else if (requests().length === 0) {
+    <app-empty-state icon="wrench" titleKey="maintenance.empty" />
+  } @else if (filtered().length === 0) {
+    <app-empty-state icon="search" titleKey="common.noResults" />
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'maintenance.property' | transloco }}</th>
+            <th>{{ 'maintenance.subject' | transloco }}</th>
+            <th>{{ 'maintenance.createdBy' | transloco }}</th>
+            <th>{{ 'maintenance.createdAt' | transloco }}</th>
+            <th>{{ 'maintenance.assignedTo' | transloco }}</th>
+            <th>{{ 'maintenance.status' | transloco }}</th>
+            @if (auth.role() === 'ADMIN') {
+              <th>{{ 'common.actions' | transloco }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (request of filtered(); track request.id) {
+            <tr animate.enter="enter-animation">
+              <td>{{ request.propertyAddress }}</td>
+              <td>{{ request.title }}</td>
+              <td>{{ request.createdByName }}</td>
+              <td>{{ request.createdAt | date: 'mediumDate' : undefined : i18n.lang() }}</td>
+              <td>{{ request.assignedTo ?? '—' }}</td>
+              <td>
+                @if (auth.role() === 'ADMIN') {
+                  <select [value]="request.status" (change)="changeStatus(request, $any($event.target).value)">
+                    @for (status of statuses; track status) {
+                      <option [value]="status" [selected]="status === request.status">{{ 'enums.maintenanceStatus.' + status | transloco }}</option>
+                    }
+                  </select>
+                } @else {
+                  <app-status-badge kind="maintenance" [status]="request.status" />
+                }
+              </td>
+              @if (auth.role() === 'ADMIN') {
+                <td class="row-actions">
+                  <a class="icon-btn" [routerLink]="['/maintenance', request.id, 'edit']" [attr.aria-label]="'common.edit' | transloco">
+                    <app-icon name="pencil" [size]="15" />
+                  </a>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

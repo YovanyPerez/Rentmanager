@@ -1,0 +1,52 @@
+<section class="page">
+  <h1>{{ (id() === null ? 'contracts.new' : 'contracts.edit') | transloco }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="propertyId">{{ 'contracts.property' | transloco }}</label>
+    <select id="propertyId" formControlName="propertyId">
+      <option [ngValue]="0" disabled>{{ 'contracts.selectProperty' | transloco }}</option>
+      @for (property of properties(); track property.id) {
+        <option [ngValue]="property.id">{{ property.address }} ({{ property.city }})</option>
+      }
+    </select>
+    @if (fieldError('propertyId'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="tenantId">{{ 'contracts.tenant' | transloco }}</label>
+    <select id="tenantId" formControlName="tenantId">
+      <option [ngValue]="0" disabled>{{ 'contracts.selectTenant' | transloco }}</option>
+      @for (tenant of tenants(); track tenant.id) {
+        <option [ngValue]="tenant.id">{{ tenant.fullName }}</option>
+      }
+    </select>
+    @if (fieldError('tenantId'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="startDate">{{ 'contracts.startDate' | transloco }}</label>
+    <input id="startDate" type="date" formControlName="startDate" />
+    @if (fieldError('startDate'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="endDate">{{ 'contracts.endDate' | transloco }}</label>
+    <input id="endDate" type="date" formControlName="endDate" />
+    @if (fieldError('endDate'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="monthlyRent">{{ 'contracts.monthlyRent' | transloco }}</label>
+    <input id="monthlyRent" type="number" step="0.01" formControlName="monthlyRent" />
+    @if (fieldError('monthlyRent'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    @if (errorKey(); as key) {
+      <p class="form-error">{{ key | transloco }}</p>
+    }
+
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">{{ 'common.save' | transloco }}</button>
+    <a class="btn btn--secondary" routerLink="/contracts">{{ 'common.cancel' | transloco }}</a>
+  </form>
+</section>

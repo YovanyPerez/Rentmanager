@@ -1,0 +1,44 @@
+<section class="page">
+  <h1>{{ (id() === null ? 'properties.new' : 'properties.edit') | transloco }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="ownerId">{{ 'properties.owner' | transloco }}</label>
+    <select id="ownerId" formControlName="ownerId">
+      <option [ngValue]="0" disabled>{{ 'properties.selectOwner' | transloco }}</option>
+      @for (owner of owners(); track owner.id) {
+        <option [ngValue]="owner.id">{{ owner.fullName }}</option>
+      }
+    </select>
+    @if (fieldError('ownerId'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="address">{{ 'properties.address' | transloco }}</label>
+    <input id="address" type="text" formControlName="address" />
+    @if (fieldError('address'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="city">{{ 'properties.city' | transloco }}</label>
+    <input id="city" type="text" formControlName="city" />
+    @if (fieldError('city'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="description">{{ 'properties.description' | transloco }}</label>
+    <textarea id="description" formControlName="description"></textarea>
+
+    <label for="monthlyRent">{{ 'properties.monthlyRent' | transloco }}</label>
+    <input id="monthlyRent" type="number" step="0.01" formControlName="monthlyRent" />
+    @if (fieldError('monthlyRent'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    @if (errorKey(); as key) {
+      <p class="form-error">{{ key | transloco }}</p>
+    }
+
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">{{ 'common.save' | transloco }}</button>
+    <a class="btn btn--secondary" routerLink="/properties">{{ 'common.cancel' | transloco }}</a>
+  </form>
+</section>

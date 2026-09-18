@@ -1,0 +1,294 @@
+{
+  "app": {
+    "title": "RentManager"
+  },
+  "langs": {
+    "es": "Español 🇪🇸",
+    "en": "English 🇺🇸"
+  },
+  "nav": {
+    "home": "Inicio",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "logout": "Cerrar sesión",
+    "menu": "Abrir menú",
+    "primary": "Navegación principal",
+    "properties": "Propiedades"
+  },
+  "common": {
+    "loading": "Cargando…",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "confirmTitle": "¿Estás seguro?",
+    "saved": "Guardado correctamente.",
+    "deleted": "Eliminado correctamente.",
+    "search": "Buscar…",
+    "all": "Todos",
+    "noResults": "Nada coincide con el filtro."
+  },
+  "auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "fullName": "Nombre completo",
+    "role": "Rol",
+    "welcome": "Bienvenido/a, {{name}}",
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión para continuar",
+      "submit": "Iniciar sesión",
+      "noAccount": "¿No tienes cuenta?"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Regístrate como inquilino para gestionar tus pagos y solicitudes",
+      "submit": "Crear cuenta",
+      "haveAccount": "¿Ya tienes cuenta?"
+    },
+    "brandClaim": "Mejores espacios, mejores historias.",
+    "brandSub": "Gestión de propiedades, inquilinos, contratos y pagos de forma simple y segura."
+  },
+  "landing": {
+    "title": "Alquiler de propiedades",
+    "heroTitle": "Encuentra el lugar ideal, nosotros nos encargamos del resto",
+    "heroSubtitle": "Gestión de propiedades, inquilinos, contratos y pagos de forma simple y segura.",
+    "searchPlaceholder": "Buscar por ciudad o dirección…",
+    "searchButton": "Buscar",
+    "featureManagement": "Gestión de propiedades",
+    "featurePayments": "Control de pagos",
+    "featureMaintenance": "Soporte de mantenimiento",
+    "featured": "Propiedades destacadas",
+    "viewAll": "Ver todas",
+    "noProperties": "No hay propiedades disponibles ahora mismo.",
+    "ctaTitle": "Gestión sencilla, propiedades rentables",
+    "ctaSubtitle": "Crea una cuenta o contacta con la administración para empezar.",
+    "ctaButton": "Crear cuenta",
+    "footerNote": "Gestión inmobiliaria, más simple."
+  },
+  "search": {
+    "title": "Propiedades disponibles",
+    "placeholder": "Buscar por ciudad o dirección…",
+    "button": "Buscar",
+    "empty": "No hay propiedades que coincidan con tu búsqueda."
+  },
+  "detail": {
+    "title": "Detalle de propiedad",
+    "back": "Volver a propiedades",
+    "backHome": "Ir al inicio",
+    "description": "Descripción",
+    "consult": "¿Te interesa esta propiedad?",
+    "consultHint": "Crea una cuenta o inicia sesión para gestionar tu alquiler.",
+    "unavailable": "Propiedad no disponible",
+    "unavailableHint": "Esta propiedad ya no está disponible o no existe."
+  },
+  "home": {
+    "title": "Inicio",
+    "quickAccess": "Accesos rápidos"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "totalProperties": "Total propiedades",
+    "availableProperties": "Disponibles",
+    "rentedProperties": "En alquiler",
+    "activeContracts": "Contratos activos",
+    "pendingPayments": "Pagos pendientes",
+    "overduePayments": "Pagos vencidos",
+    "openMaintenanceRequests": "Solicitudes abiertas",
+    "monthlyIncome": "Ingresos del mes",
+    "incomeChart": "Ingresos mensuales (últimos 12 meses)",
+    "upcomingPayments": "Próximos pagos",
+    "maintenanceRequests": "Solicitudes de mantenimiento",
+    "noUpcoming": "No hay pagos pendientes.",
+    "noRequests": "No hay solicitudes abiertas."
+  },
+  "properties": {
+    "title": "Propiedades",
+    "new": "Nueva propiedad",
+    "edit": "Editar propiedad",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "description": "Descripción",
+    "monthlyRent": "Renta mensual",
+    "perMonth": "/mes",
+    "owner": "Propietario",
+    "selectOwner": "Selecciona un propietario",
+    "status": "Estado",
+    "empty": "No hay propiedades.",
+    "noResults": "Ninguna propiedad coincide con el filtro.",
+    "deleteConfirm": "La propiedad pasará a estado inactiva. Las propiedades alquiladas no se pueden desactivar."
+  },
+  "owners": {
+    "title": "Propietarios",
+    "new": "Nuevo propietario",
+    "edit": "Editar propietario",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "linkedUser": "Usuario vinculado",
+    "noUser": "Sin usuario",
+    "empty": "No hay propietarios.",
+    "deleteConfirm": "Se eliminará el propietario. No es posible si tiene propiedades."
+  },
+  "tenants": {
+    "title": "Inquilinos",
+    "new": "Nuevo inquilino",
+    "edit": "Editar inquilino",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "linkedUser": "Usuario vinculado",
+    "noUser": "Sin usuario",
+    "empty": "No hay inquilinos.",
+    "deleteConfirm": "Se eliminará el inquilino. No es posible si tiene contratos."
+  },
+  "contracts": {
+    "title": "Contratos",
+    "new": "Nuevo contrato",
+    "edit": "Editar contrato",
+    "property": "Propiedad",
+    "tenant": "Inquilino",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de fin",
+    "monthlyRent": "Renta mensual",
+    "status": "Estado",
+    "selectProperty": "Selecciona una propiedad",
+    "selectTenant": "Selecciona un inquilino",
+    "activate": "Activar",
+    "terminate": "Terminar",
+    "empty": "No hay contratos.",
+    "deleteConfirm": "Se eliminará el contrato en borrador.",
+    "terminateConfirm": "El contrato pasará a terminado y la propiedad quedará disponible."
+  },
+  "payments": {
+    "title": "Pagos",
+    "new": "Nuevo pago",
+    "contract": "Contrato",
+    "selectContract": "Selecciona un contrato",
+    "property": "Propiedad",
+    "tenant": "Inquilino",
+    "amount": "Importe",
+    "dueDate": "Vencimiento",
+    "paidDate": "Fecha de pago",
+    "status": "Estado",
+    "markPaid": "Marcar pagado",
+    "cancel": "Cancelar pago",
+    "empty": "No hay pagos.",
+    "cancelConfirm": "El pago quedará cancelado y no se puede revertir."
+  },
+  "maintenance": {
+    "title": "Mantenimiento",
+    "new": "Nueva solicitud",
+    "edit": "Editar solicitud",
+    "property": "Propiedad",
+    "selectProperty": "Selecciona una propiedad",
+    "subject": "Título",
+    "description": "Descripción",
+    "createdBy": "Creada por",
+    "createdAt": "Fecha",
+    "assignedTo": "Asignada a",
+    "status": "Estado",
+    "empty": "No hay solicitudes."
+  },
+  "messages": {
+    "propertyCreated": "Propiedad creada correctamente.",
+    "propertyUpdated": "Propiedad actualizada correctamente.",
+    "propertyDeactivated": "Propiedad desactivada.",
+    "ownerCreated": "Propietario creado correctamente.",
+    "ownerUpdated": "Propietario actualizado correctamente.",
+    "ownerDeleted": "Propietario eliminado.",
+    "tenantCreated": "Inquilino creado correctamente.",
+    "tenantUpdated": "Inquilino actualizado correctamente.",
+    "tenantDeleted": "Inquilino eliminado.",
+    "contractCreated": "Contrato creado en borrador.",
+    "contractUpdated": "Contrato actualizado.",
+    "contractActivated": "Contrato activado. La propiedad pasa a alquilada.",
+    "contractTerminated": "Contrato terminado.",
+    "contractDeleted": "Contrato eliminado.",
+    "paymentCreated": "Pago creado.",
+    "paymentPaid": "Pago marcado como pagado.",
+    "paymentCancelled": "Pago cancelado.",
+    "maintenanceCreated": "Solicitud creada.",
+    "maintenanceUpdated": "Solicitud actualizada."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe.",
+    "backHome": "Volver al inicio"
+  },
+  "enums": {
+    "role": {
+      "ADMIN": "Administrador",
+      "OWNER": "Propietario",
+      "TENANT": "Inquilino"
+    },
+    "propertyStatus": {
+      "AVAILABLE": "Disponible",
+      "RENTED": "Alquilada",
+      "MAINTENANCE": "Mantenimiento",
+      "INACTIVE": "Inactiva"
+    },
+    "contractStatus": {
+      "DRAFT": "Borrador",
+      "ACTIVE": "Activo",
+      "EXPIRED": "Expirado",
+      "TERMINATED": "Terminado"
+    },
+    "paymentStatus": {
+      "PENDING": "Pendiente",
+      "PAID": "Pagado",
+      "OVERDUE": "Vencido",
+      "CANCELLED": "Cancelado"
+    },
+    "maintenanceStatus": {
+      "OPEN": "Abierta",
+      "IN_PROGRESS": "En progreso",
+      "COMPLETED": "Completada",
+      "CANCELLED": "Cancelada"
+    }
+  },
+  "errors": {
+    "UNKNOWN": "Ha ocurrido un error inesperado.",
+    "VALIDATION_ERROR": "Revisa los datos del formulario.",
+    "BAD_REQUEST": "La petición no es válida.",
+    "UNAUTHORIZED": "Debes iniciar sesión.",
+    "INVALID_CREDENTIALS": "Credenciales incorrectas.",
+    "FORBIDDEN": "No tienes permiso para realizar esta acción.",
+    "NOT_FOUND": "Recurso no encontrado.",
+    "METHOD_NOT_ALLOWED": "Operación no permitida.",
+    "EMAIL_ALREADY_USED": "Ese correo ya está registrado.",
+    "USER_NOT_FOUND": "Usuario no encontrado.",
+    "OWNER_NOT_FOUND": "Propietario no encontrado.",
+    "TENANT_NOT_FOUND": "Inquilino no encontrado.",
+    "PROPERTY_NOT_FOUND": "Propiedad no encontrada.",
+    "CONTRACT_NOT_FOUND": "Contrato no encontrado.",
+    "PAYMENT_NOT_FOUND": "Pago no encontrado.",
+    "MAINTENANCE_NOT_FOUND": "Solicitud no encontrada.",
+    "CONFLICT": "La operación entra en conflicto con datos existentes.",
+    "CONFLICT_ACTIVE_CONTRACT": "La propiedad ya tiene un contrato activo.",
+    "INVALID_STATE_TRANSITION": "Cambio de estado no permitido.",
+    "INVALID_DATE_RANGE": "El rango de fechas no es válido.",
+    "USER_ROLE_MISMATCH": "El rol del usuario no corresponde.",
+    "USER_ALREADY_LINKED": "Ese usuario ya está vinculado.",
+    "OWNER_HAS_PROPERTIES": "El propietario tiene propiedades asociadas.",
+    "TENANT_HAS_CONTRACTS": "El inquilino tiene contratos asociados.",
+    "PAYMENT_ALREADY_EXISTS": "Ya existe un pago con esa fecha para el contrato.",
+    "INTERNAL_ERROR": "Error interno del servidor."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio.",
+    "email": "Introduce un correo válido.",
+    "minLength": "Debe tener al menos {{min}} caracteres.",
+    "size": "Longitud no válida.",
+    "positive": "Debe ser mayor que cero.",
+    "positive_or_zero": "No puede ser negativo.",
+    "pattern": "Formato no válido.",
+    "min": "Valor demasiado bajo.",
+    "max": "Valor demasiado alto.",
+    "future": "La fecha debe ser futura.",
+    "past": "La fecha debe ser pasada.",
+    "invalid": "Valor no válido."
+  }
+}

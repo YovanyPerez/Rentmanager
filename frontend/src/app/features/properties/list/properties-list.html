@@ -1,0 +1,98 @@
+<div class="page">
+  <div class="page-header">
+    <h1>{{ 'properties.title' | transloco }}</h1>
+    @if (auth.role() === 'ADMIN') {
+      <a class="btn btn--primary" routerLink="/properties/new">
+        <app-icon name="plus" [size]="16" />
+        <span>{{ 'properties.new' | transloco }}</span>
+      </a>
+    }
+  </div>
+
+  @if (errorKey(); as key) {
+    <p class="form-error">{{ key | transloco }}</p>
+  }
+
+  <div class="toolbar">
+    <div class="field">
+      <app-icon name="search" [size]="16" />
+      <input
+        type="search"
+        [placeholder]="'common.search' | transloco"
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+      />
+    </div>
+    <select [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
+      <option value="ALL">{{ 'common.all' | transloco }}</option>
+      @for (status of statuses; track status) {
+        <option [value]="status">{{ 'enums.propertyStatus.' + status | transloco }}</option>
+      }
+    </select>
+  </div>
+
+  @if (loading()) {
+    <div class="card-grid">
+      @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+        <app-skeleton [height]="300" />
+      }
+    </div>
+  } @else if (properties().length === 0) {
+    <app-empty-state icon="building" titleKey="properties.empty" />
+  } @else if (filtered().length === 0) {
+    <app-empty-state icon="search" titleKey="properties.noResults" />
+  } @else {
+    <div class="card-grid">
+      @for (property of filtered(); track property.id) {
+        <article class="entity-card" animate.enter="enter-animation">
+          <div class="entity-card__media">
+            <app-icon name="building" [size]="36" />
+            <app-status-badge kind="property" [status]="property.status" />
+          </div>
+          <div class="entity-card__body">
+            <h2 class="entity-card__title">{{ property.address }}</h2>
+            <p class="entity-card__meta">
+              <app-icon name="map-pin" [size]="14" /> {{ property.city }} · {{ property.ownerName }}
+            </p>
+            <p class="entity-card__price">
+              {{ property.monthlyRent | number: '1.2-2' : i18n.lang() }}
+              <span>{{ 'properties.perMonth' | transloco }}</span>
+            </p>
+
+            @if (auth.role() === 'ADMIN') {
+              <div class="entity-card__actions">
+                <select
+                  class="btn--sm"
+                  [value]="property.status"
+                  (change)="changeStatus(property, $any($event.target).value)"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status" [selected]="status === property.status">{{ 'enums.propertyStatus.' + status | transloco }}</option>
+                  }
+                </select>
+                <a class="icon-btn" [routerLink]="['/properties', property.id, 'edit']" [attr.aria-label]="'common.edit' | transloco">
+                  <app-icon name="pencil" [size]="15" />
+                </a>
+                <button
+                  type="button"
+                  class="icon-btn icon-btn--danger"
+                  [attr.aria-label]="'common.delete' | transloco"
+                  (click)="requestDeactivate(property)"
+                >
+                  <app-icon name="trash" [size]="15" />
+                </button>
+              </div>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="confirming() !== null"
+  messageKey="properties.deleteConfirm"
+  (confirmed)="confirmDeactivate()"
+  (cancelled)="confirming.set(null)"
+/>

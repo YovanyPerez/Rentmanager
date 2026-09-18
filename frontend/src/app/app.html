@@ -1,0 +1,85 @@
+@if (auth.user(); as user) {
+  <div class="shell">
+    <aside class="sidebar" [class.sidebar--open]="menuOpen()">
+      <a class="sidebar__brand" routerLink="/home" (click)="closeMenu()">
+        <span class="sidebar__mark"><app-icon name="building" [size]="18" /></span>
+        <span>{{ 'app.title' | transloco }}</span>
+      </a>
+
+      <nav class="sidebar__nav" [attr.aria-label]="'nav.primary' | transloco">
+        @for (item of navItems(); track item.path) {
+          <a
+            class="sidebar__link"
+            [routerLink]="item.path"
+            routerLinkActive="sidebar__link--active"
+            (click)="closeMenu()"
+          >
+            <app-icon [name]="item.icon" [size]="17" />
+            <span>{{ item.key | transloco }}</span>
+          </a>
+        }
+      </nav>
+
+      <div class="sidebar__footer">
+        <span class="sidebar__user">{{ user.fullName }}</span>
+        <span class="sidebar__role">{{ 'enums.role.' + user.role | transloco }}</span>
+      </div>
+    </aside>
+
+    @if (menuOpen()) {
+      <div class="scrim" (click)="closeMenu()"></div>
+    }
+
+    <div class="shell__main">
+      <header class="topbar">
+        <button
+          type="button"
+          class="topbar__burger"
+          [attr.aria-label]="'nav.menu' | transloco"
+          [attr.aria-expanded]="menuOpen()"
+          (click)="menuOpen.set(!menuOpen())"
+        >
+          <app-icon name="menu" [size]="20" />
+        </button>
+
+        <span class="topbar__spacer"></span>
+
+        <app-language-selector />
+
+        <div class="topbar__user">
+          <span class="avatar">{{ initials() }}</span>
+          <span class="topbar__name">{{ user.fullName }}</span>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm" (click)="auth.logout()">
+          <app-icon name="log-out" [size]="16" />
+          <span class="hide-sm">{{ 'nav.logout' | transloco }}</span>
+        </button>
+      </header>
+
+      <main class="content">
+        <router-outlet />
+      </main>
+    </div>
+
+    <nav class="bottom-nav" [attr.aria-label]="'nav.primary' | transloco">
+      @for (item of bottomNav(); track item.path) {
+        <a class="bottom-nav__link" [routerLink]="item.path" routerLinkActive="bottom-nav__link--active">
+          <app-icon [name]="item.icon" [size]="18" />
+          <span>{{ item.key | transloco }}</span>
+        </a>
+      }
+    </nav>
+  </div>
+} @else {
+  <div class="public-layout">
+    <div class="public-layout__lang">
+      <app-language-selector />
+    </div>
+    <main>
+      <router-outlet />
+    </main>
+  </div>
+}
+
+<app-toast-host />

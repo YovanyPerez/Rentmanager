@@ -1,0 +1,55 @@
+<div class="auth">
+  <section class="auth__form">
+    <a class="auth__brand" routerLink="/">
+      <span class="auth__mark"><app-icon name="building" [size]="18" /></span>
+      <span>{{ 'app.title' | transloco }}</span>
+    </a>
+
+    <h1>{{ 'auth.login.title' | transloco }}</h1>
+    <p class="auth__subtitle">{{ 'auth.login.subtitle' | transloco }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div>
+        <label for="email">{{ 'auth.email' | transloco }}</label>
+        <div class="field">
+          <app-icon name="mail" [size]="16" />
+          <input id="email" type="email" formControlName="email" autocomplete="email" />
+        </div>
+        @if (fieldError('email'); as message) {
+          <p class="field-error">{{ message }}</p>
+        }
+      </div>
+
+      <div>
+        <label for="password">{{ 'auth.password' | transloco }}</label>
+        <div class="field">
+          <app-icon name="lock" [size]="16" />
+          <input id="password" type="password" formControlName="password" autocomplete="current-password" />
+        </div>
+        @if (fieldError('password'); as message) {
+          <p class="field-error">{{ message }}</p>
+        }
+      </div>
+
+      @if (errorKey(); as key) {
+        <p class="form-error">{{ key | transloco }}</p>
+      }
+
+      <button type="submit" class="btn btn--primary" [disabled]="submitting()">
+        {{ 'auth.login.submit' | transloco }}
+      </button>
+    </form>
+
+    <p class="auth__switch">
+      {{ 'auth.login.noAccount' | transloco }}
+      <a routerLink="/register">{{ 'nav.register' | transloco }}</a>
+    </p>
+  </section>
+
+  <aside class="auth__panel">
+    <div>
+      <h2>{{ 'auth.brandClaim' | transloco }}</h2>
+      <p>{{ 'auth.brandSub' | transloco }}</p>
+    </div>
+  </aside>
+</div>

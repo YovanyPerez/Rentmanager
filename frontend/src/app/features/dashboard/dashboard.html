@@ -1,0 +1,105 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'dashboard.title' | transloco }}</h1>
+      @if (auth.user(); as user) {
+        <p class="entity-card__meta">{{ 'auth.welcome' | transloco: { name: user.fullName } }}</p>
+      }
+    </div>
+  </div>
+
+  @if (errorKey(); as key) {
+    <p class="form-error">{{ key | transloco }}</p>
+  }
+
+  <div class="kpi-grid">
+    @if (stats(); as data) {
+      <article class="kpi">
+        <span class="kpi__label"><app-icon name="building" [size]="16" />{{ 'dashboard.totalProperties' | transloco }}</span>
+        <span class="kpi__value">{{ data.totalProperties }}</span>
+      </article>
+      <article class="kpi">
+        <span class="kpi__label"><app-icon name="file-text" [size]="16" />{{ 'dashboard.rentedProperties' | transloco }}</span>
+        <span class="kpi__value">{{ data.rentedProperties }}</span>
+      </article>
+      <article class="kpi">
+        <span class="kpi__label"><app-icon name="check" [size]="16" />{{ 'dashboard.availableProperties' | transloco }}</span>
+        <span class="kpi__value">{{ data.availableProperties }}</span>
+      </article>
+      <article class="kpi">
+        <span class="kpi__label"><app-icon name="credit-card" [size]="16" />{{ 'dashboard.monthlyIncome' | transloco }}</span>
+        <span class="kpi__value">{{ data.monthlyIncome | number: '1.2-2' : i18n.lang() }}</span>
+      </article>
+    } @else {
+      <app-skeleton [height]="108" />
+      <app-skeleton [height]="108" />
+      <app-skeleton [height]="108" />
+      <app-skeleton [height]="108" />
+    }
+  </div>
+
+  <div class="dash-grid">
+    <section class="panel">
+      <h2>{{ 'dashboard.incomeChart' | transloco }}</h2>
+      <div class="chart">
+        @for (month of chart(); track $index) {
+          <div class="chart__col" [title]="month.total | number: '1.2-2' : i18n.lang()">
+            <div class="chart__bar" [style.height.%]="barHeight(month)"></div>
+            <span class="chart__label">{{ month.label }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>{{ 'dashboard.upcomingPayments' | transloco }}</h2>
+      @if (upcoming().length === 0) {
+        <p class="entity-card__meta">{{ 'dashboard.noUpcoming' | transloco }}</p>
+      } @else {
+        <div class="list-rows">
+          @for (payment of upcoming(); track payment.id) {
+            <div class="list-row">
+              <div>
+                <p class="list-row__title">{{ payment.tenantName }}</p>
+                <p class="list-row__meta">{{ payment.propertyAddress }}</p>
+              </div>
+              <div class="list-row__value">
+                {{ payment.amount | number: '1.2-2' : i18n.lang() }}
+                <p class="list-row__meta">{{ payment.dueDate | date: 'mediumDate' : undefined : i18n.lang() }}</p>
+              </div>
+              <div class="list-row__badge">
+                <app-status-badge kind="payment" [status]="payment.status" />
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </div>
+
+  <section class="panel" style="margin-top: 20px">
+    <h2>{{ 'dashboard.maintenanceRequests' | transloco }}</h2>
+    @if (recentRequests().length === 0) {
+      <p class="entity-card__meta">{{ 'dashboard.noRequests' | transloco }}</p>
+    } @else {
+      <div class="list-rows">
+        @for (request of recentRequests(); track request.id) {
+          <div class="list-row">
+            <div>
+              <p class="list-row__title">{{ request.title }}</p>
+              <p class="list-row__meta">
+                {{ request.propertyAddress }} · {{ request.createdByName }}
+              </p>
+            </div>
+            <div class="list-row__meta">
+              {{ request.createdAt | date: 'mediumDate' : undefined : i18n.lang() }}
+            </div>
+            <div class="list-row__badge">
+              <app-status-badge kind="maintenance" [status]="request.status" />
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</div>

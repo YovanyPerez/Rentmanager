@@ -1,0 +1,33 @@
+<section class="page">
+  <h1>{{ 'maintenance.edit' | transloco }}</h1>
+
+  @if (request(); as current) {
+    <dl>
+      <dt>{{ 'maintenance.property' | transloco }}</dt>
+      <dd>{{ current.propertyAddress }}</dd>
+      <dt>{{ 'maintenance.subject' | transloco }}</dt>
+      <dd>{{ current.title }}</dd>
+      <dt>{{ 'maintenance.createdBy' | transloco }}</dt>
+      <dd>{{ current.createdByName }}</dd>
+    </dl>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="status">{{ 'maintenance.status' | transloco }}</label>
+    <select id="status" formControlName="status">
+      @for (status of statuses; track status) {
+        <option [value]="status">{{ 'enums.maintenanceStatus.' + status | transloco }}</option>
+      }
+    </select>
+
+    <label for="assignedTo">{{ 'maintenance.assignedTo' | transloco }}</label>
+    <input id="assignedTo" type="text" formControlName="assignedTo" />
+
+    @if (errorKey(); as key) {
+      <p class="form-error">{{ key | transloco }}</p>
+    }
+
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">{{ 'common.save' | transloco }}</button>
+    <a class="btn btn--secondary" routerLink="/maintenance">{{ 'common.cancel' | transloco }}</a>
+  </form>
+</section>

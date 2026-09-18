@@ -1,0 +1,37 @@
+<section class="page">
+  <h1>{{ 'payments.new' | transloco }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="contractId">{{ 'payments.contract' | transloco }}</label>
+    <select id="contractId" formControlName="contractId">
+      <option [ngValue]="0" disabled>{{ 'payments.selectContract' | transloco }}</option>
+      @for (contract of contracts(); track contract.id) {
+        <option [ngValue]="contract.id">
+          {{ contract.propertyAddress }} — {{ contract.tenantName }} ({{ 'enums.contractStatus.' + contract.status | transloco }})
+        </option>
+      }
+    </select>
+    @if (fieldError('contractId'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="amount">{{ 'payments.amount' | transloco }}</label>
+    <input id="amount" type="number" step="0.01" formControlName="amount" />
+    @if (fieldError('amount'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    <label for="dueDate">{{ 'payments.dueDate' | transloco }}</label>
+    <input id="dueDate" type="date" formControlName="dueDate" />
+    @if (fieldError('dueDate'); as message) {
+      <p class="field-error">{{ message }}</p>
+    }
+
+    @if (errorKey(); as key) {
+      <p class="form-error">{{ key | transloco }}</p>
+    }
+
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">{{ 'common.save' | transloco }}</button>
+    <a class="btn btn--secondary" routerLink="/payments">{{ 'common.cancel' | transloco }}</a>
+  </form>
+</section>

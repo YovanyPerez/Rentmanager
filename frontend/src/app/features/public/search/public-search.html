@@ -1,0 +1,43 @@
+<div class="page">
+  <div class="page-header">
+    <h1>{{ 'search.title' | transloco }}</h1>
+    <a class="btn btn--ghost" routerLink="/">{{ 'detail.backHome' | transloco }}</a>
+  </div>
+
+  <form class="landing__search public-search__form" [formGroup]="searchForm" (ngSubmit)="search()" novalidate>
+    <div class="field">
+      <app-icon name="search" [size]="16" />
+      <input type="search" formControlName="query" [placeholder]="'search.placeholder' | transloco" />
+    </div>
+    <button type="submit" class="btn btn--primary">{{ 'search.button' | transloco }}</button>
+  </form>
+
+  @if (loading()) {
+    <div class="card-grid">
+      @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+        <app-skeleton [height]="260" />
+      }
+    </div>
+  } @else if (results().length === 0) {
+    <app-empty-state icon="search" titleKey="search.empty" />
+  } @else {
+    <div class="card-grid">
+      @for (property of results(); track property.id) {
+        <a class="entity-card" [routerLink]="['/property', property.id]" animate.enter="enter-animation">
+          <div class="entity-card__media">
+            <app-icon name="building" [size]="36" />
+            <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>
+          </div>
+          <div class="entity-card__body">
+            <h2 class="entity-card__title">{{ property.address }}</h2>
+            <p class="entity-card__meta"><app-icon name="map-pin" [size]="14" /> {{ property.city }}</p>
+            <p class="entity-card__price">
+              {{ property.monthlyRent | number: '1.2-2' : i18n.lang() }}
+              <span>{{ 'properties.perMonth' | transloco }}</span>
+            </p>
+          </div>
+        </a>
+      }
+    </div>
+  }
+</div>

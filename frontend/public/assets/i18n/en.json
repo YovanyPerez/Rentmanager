@@ -1,0 +1,294 @@
+{
+  "app": {
+    "title": "RentManager"
+  },
+  "langs": {
+    "es": "Español 🇪🇸",
+    "en": "English 🇺🇸"
+  },
+  "nav": {
+    "home": "Home",
+    "login": "Sign in",
+    "register": "Create account",
+    "logout": "Sign out",
+    "menu": "Open menu",
+    "primary": "Main navigation",
+    "properties": "Properties"
+  },
+  "common": {
+    "loading": "Loading…",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirmTitle": "Are you sure?",
+    "saved": "Saved successfully.",
+    "deleted": "Deleted successfully.",
+    "search": "Search…",
+    "all": "All",
+    "noResults": "Nothing matches the filter."
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "role": "Role",
+    "welcome": "Welcome, {{name}}",
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Register as a tenant to manage your payments and requests",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account?"
+    },
+    "brandClaim": "Better spaces, better stories.",
+    "brandSub": "Manage properties, tenants, contracts and payments simply and securely."
+  },
+  "landing": {
+    "title": "Property rentals",
+    "heroTitle": "Find the ideal place, we take care of the rest",
+    "heroSubtitle": "Manage properties, tenants, contracts and payments simply and securely.",
+    "searchPlaceholder": "Search by city or address…",
+    "searchButton": "Search",
+    "featureManagement": "Property management",
+    "featurePayments": "Payment tracking",
+    "featureMaintenance": "Maintenance support",
+    "featured": "Featured properties",
+    "viewAll": "View all",
+    "noProperties": "No properties available right now.",
+    "ctaTitle": "Simple management, profitable properties",
+    "ctaSubtitle": "Create an account or contact the administration to get started.",
+    "ctaButton": "Create account",
+    "footerNote": "Property management, made simple."
+  },
+  "search": {
+    "title": "Available properties",
+    "placeholder": "Search by city or address…",
+    "button": "Search",
+    "empty": "No properties match your search."
+  },
+  "detail": {
+    "title": "Property details",
+    "back": "Back to properties",
+    "backHome": "Go to home",
+    "description": "Description",
+    "consult": "Interested in this property?",
+    "consultHint": "Create an account or sign in to manage your rental.",
+    "unavailable": "Property not available",
+    "unavailableHint": "This property is no longer available or does not exist."
+  },
+  "home": {
+    "title": "Home",
+    "quickAccess": "Quick access"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalProperties": "Total properties",
+    "availableProperties": "Available",
+    "rentedProperties": "Rented",
+    "activeContracts": "Active contracts",
+    "pendingPayments": "Pending payments",
+    "overduePayments": "Overdue payments",
+    "openMaintenanceRequests": "Open requests",
+    "monthlyIncome": "Monthly income",
+    "incomeChart": "Monthly income (last 12 months)",
+    "upcomingPayments": "Upcoming payments",
+    "maintenanceRequests": "Maintenance requests",
+    "noUpcoming": "No pending payments.",
+    "noRequests": "No open requests."
+  },
+  "properties": {
+    "title": "Properties",
+    "new": "New property",
+    "edit": "Edit property",
+    "address": "Address",
+    "city": "City",
+    "description": "Description",
+    "monthlyRent": "Monthly rent",
+    "perMonth": "/mo",
+    "owner": "Owner",
+    "selectOwner": "Select an owner",
+    "status": "Status",
+    "empty": "No properties.",
+    "noResults": "No property matches the filter.",
+    "deleteConfirm": "The property will become inactive. Rented properties cannot be deactivated."
+  },
+  "owners": {
+    "title": "Owners",
+    "new": "New owner",
+    "edit": "Edit owner",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "linkedUser": "Linked user",
+    "noUser": "No user",
+    "empty": "No owners.",
+    "deleteConfirm": "The owner will be deleted. Not possible if they have properties."
+  },
+  "tenants": {
+    "title": "Tenants",
+    "new": "New tenant",
+    "edit": "Edit tenant",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "linkedUser": "Linked user",
+    "noUser": "No user",
+    "empty": "No tenants.",
+    "deleteConfirm": "The tenant will be deleted. Not possible if they have contracts."
+  },
+  "contracts": {
+    "title": "Contracts",
+    "new": "New contract",
+    "edit": "Edit contract",
+    "property": "Property",
+    "tenant": "Tenant",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "monthlyRent": "Monthly rent",
+    "status": "Status",
+    "selectProperty": "Select a property",
+    "selectTenant": "Select a tenant",
+    "activate": "Activate",
+    "terminate": "Terminate",
+    "empty": "No contracts.",
+    "deleteConfirm": "The draft contract will be deleted.",
+    "terminateConfirm": "The contract will be terminated and the property released."
+  },
+  "payments": {
+    "title": "Payments",
+    "new": "New payment",
+    "contract": "Contract",
+    "selectContract": "Select a contract",
+    "property": "Property",
+    "tenant": "Tenant",
+    "amount": "Amount",
+    "dueDate": "Due date",
+    "paidDate": "Paid date",
+    "status": "Status",
+    "markPaid": "Mark as paid",
+    "cancel": "Cancel payment",
+    "empty": "No payments.",
+    "cancelConfirm": "The payment will be cancelled and cannot be reverted."
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "new": "New request",
+    "edit": "Edit request",
+    "property": "Property",
+    "selectProperty": "Select a property",
+    "subject": "Title",
+    "description": "Description",
+    "createdBy": "Created by",
+    "createdAt": "Date",
+    "assignedTo": "Assigned to",
+    "status": "Status",
+    "empty": "No requests."
+  },
+  "messages": {
+    "propertyCreated": "Property created successfully.",
+    "propertyUpdated": "Property updated successfully.",
+    "propertyDeactivated": "Property deactivated.",
+    "ownerCreated": "Owner created successfully.",
+    "ownerUpdated": "Owner updated successfully.",
+    "ownerDeleted": "Owner deleted.",
+    "tenantCreated": "Tenant created successfully.",
+    "tenantUpdated": "Tenant updated successfully.",
+    "tenantDeleted": "Tenant deleted.",
+    "contractCreated": "Contract created as draft.",
+    "contractUpdated": "Contract updated.",
+    "contractActivated": "Contract activated. The property is now rented.",
+    "contractTerminated": "Contract terminated.",
+    "contractDeleted": "Contract deleted.",
+    "paymentCreated": "Payment created.",
+    "paymentPaid": "Payment marked as paid.",
+    "paymentCancelled": "Payment cancelled.",
+    "maintenanceCreated": "Request created.",
+    "maintenanceUpdated": "Request updated."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backHome": "Back to home"
+  },
+  "enums": {
+    "role": {
+      "ADMIN": "Administrator",
+      "OWNER": "Owner",
+      "TENANT": "Tenant"
+    },
+    "propertyStatus": {
+      "AVAILABLE": "Available",
+      "RENTED": "Rented",
+      "MAINTENANCE": "Maintenance",
+      "INACTIVE": "Inactive"
+    },
+    "contractStatus": {
+      "DRAFT": "Draft",
+      "ACTIVE": "Active",
+      "EXPIRED": "Expired",
+      "TERMINATED": "Terminated"
+    },
+    "paymentStatus": {
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "OVERDUE": "Overdue",
+      "CANCELLED": "Cancelled"
+    },
+    "maintenanceStatus": {
+      "OPEN": "Open",
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "errors": {
+    "UNKNOWN": "An unexpected error occurred.",
+    "VALIDATION_ERROR": "Check the form fields.",
+    "BAD_REQUEST": "The request is not valid.",
+    "UNAUTHORIZED": "You must sign in.",
+    "INVALID_CREDENTIALS": "Incorrect credentials.",
+    "FORBIDDEN": "You are not allowed to perform this action.",
+    "NOT_FOUND": "Resource not found.",
+    "METHOD_NOT_ALLOWED": "Operation not allowed.",
+    "EMAIL_ALREADY_USED": "That email is already registered.",
+    "USER_NOT_FOUND": "User not found.",
+    "OWNER_NOT_FOUND": "Owner not found.",
+    "TENANT_NOT_FOUND": "Tenant not found.",
+    "PROPERTY_NOT_FOUND": "Property not found.",
+    "CONTRACT_NOT_FOUND": "Contract not found.",
+    "PAYMENT_NOT_FOUND": "Payment not found.",
+    "MAINTENANCE_NOT_FOUND": "Request not found.",
+    "CONFLICT": "The operation conflicts with existing data.",
+    "CONFLICT_ACTIVE_CONTRACT": "The property already has an active contract.",
+    "INVALID_STATE_TRANSITION": "State change not allowed.",
+    "INVALID_DATE_RANGE": "The date range is not valid.",
+    "USER_ROLE_MISMATCH": "The user role does not match.",
+    "USER_ALREADY_LINKED": "That user is already linked.",
+    "OWNER_HAS_PROPERTIES": "The owner has associated properties.",
+    "TENANT_HAS_CONTRACTS": "The tenant has associated contracts.",
+    "PAYMENT_ALREADY_EXISTS": "A payment with that date already exists for the contract.",
+    "INTERNAL_ERROR": "Internal server error."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "minLength": "Must be at least {{min}} characters long.",
+    "size": "Invalid length.",
+    "positive": "Must be greater than zero.",
+    "positive_or_zero": "Cannot be negative.",
+    "pattern": "Invalid format.",
+    "min": "Value too low.",
+    "max": "Value too high.",
+    "future": "The date must be in the future.",
+    "past": "The date must be in the past.",
+    "invalid": "Invalid value."
+  }
+}
