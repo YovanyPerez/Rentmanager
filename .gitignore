@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Angular
+.angular/
+dist/
+out-tsc/
+
+# Java / Maven
+target/
+*.class
+
+# Environment / secrets
+.env
+.env.local
+
+# Documentation build temp file
+.manual-build.html
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
