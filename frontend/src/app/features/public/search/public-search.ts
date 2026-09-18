@@ -7,12 +7,13 @@ import { LanguageService } from '../../../core/i18n/language.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
+import { PropertyMedia } from '../../../shared/components/property-media/property-media';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
 import { PublicProperty } from '../../../shared/models/public-property';
 
 @Component({
   selector: 'app-public-search',
-  imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, Skeleton, EmptyState],
+  imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, PropertyMedia, Skeleton, EmptyState],
   templateUrl: './public-search.html',
 })
 export class PublicSearch implements OnInit {

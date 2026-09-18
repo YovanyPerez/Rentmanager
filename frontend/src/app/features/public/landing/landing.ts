@@ -7,11 +7,13 @@ import { LanguageService } from '../../../core/i18n/language.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
 import { Icon } from '../../../shared/components/icon/icon';
+import { PropertyMedia } from '../../../shared/components/property-media/property-media';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
+import { PublicProperty } from '../../../shared/models/public-property';
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, Skeleton],
+  imports: [RouterLink, TranslocoPipe, DecimalPipe, ReactiveFormsModule, Icon, PropertyMedia, Skeleton],
   templateUrl: './landing.html',
 })
 export class Landing implements OnInit {
@@ -21,7 +23,7 @@ export class Landing implements OnInit {
   private readonly fb = inject(FormBuilder);
   protected readonly i18n = inject(LanguageService);
 
-  protected readonly featured = signal<{ id: number; address: string; city: string; monthlyRent: number }[]>([]);
+  protected readonly featured = signal<PublicProperty[]>([]);
   protected readonly loading = signal(true);
   protected readonly year = new Date().getFullYear();
 

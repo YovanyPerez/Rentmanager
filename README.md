@@ -63,6 +63,7 @@ npm start              # http://localhost:4200
 - `docs/ARCHITECTURE.md` — backend/data model/API guide (self-contained, for building or replacing the frontend)
 - `docs/i18n.md` — internationalisation conventions
 - `database/README.md` — data model and database decisions
+- `frontend/public/assets/properties/CREDITS.md` — licencias de las fotos de demostración (CC0)
 - Manual de usuario — below in this README, also available as `docs/manual-usuario.pdf`
 
 ---
@@ -145,7 +146,7 @@ Listado con filtro por estado. Desde cada tarjeta el administrador puede cambiar
 
 ![Listado de propiedades](docs/images/09-admin-propiedades.png)
 
-Formulario de alta de propiedad, con propietario, dirección, ciudad, descripción y renta mensual.
+Formulario de alta de propiedad, con propietario, dirección, ciudad, descripción, foto (URL opcional) y renta mensual. Al crear una propiedad se redirige a su edición para poder añadir o cambiar la foto. Si no se indica foto, la tarjeta muestra el marcador con el icono.
 
 ![Nueva propiedad](docs/images/10-admin-propiedad-nueva.png)
 

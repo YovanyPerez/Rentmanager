@@ -15,5 +15,8 @@ export function fieldErrorMessage(control: AbstractControl, i18n: LanguageServic
   if (control.hasError('minlength')) {
     return i18n.t('validation.minLength', { min: control.getError('minlength').requiredLength });
   }
+  if (control.hasError('maxlength')) {
+    return i18n.t('validation.maxLength', { max: control.getError('maxlength').requiredLength });
+  }
   return i18n.t('validation.invalid');
 }

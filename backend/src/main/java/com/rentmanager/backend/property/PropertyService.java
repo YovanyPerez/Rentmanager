@@ -120,6 +120,7 @@ public class PropertyService {
     property.setAddress(request.address());
     property.setCity(request.city());
     property.setDescription(request.description());
+    property.setImageUrl(request.imageUrl());
     property.setMonthlyRent(request.monthlyRent());
   }
 }

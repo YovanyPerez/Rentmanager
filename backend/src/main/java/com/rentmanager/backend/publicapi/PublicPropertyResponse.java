@@ -9,6 +9,7 @@ public record PublicPropertyResponse(
     String address,
     String city,
     String description,
+    String imageUrl,
     BigDecimal monthlyRent,
     String status) {
 
@@ -18,6 +19,7 @@ public record PublicPropertyResponse(
         property.getAddress(),
         property.getCity(),
         property.getDescription(),
+        property.getImageUrl(),
         property.getMonthlyRent(),
         property.getStatus().name());
   }

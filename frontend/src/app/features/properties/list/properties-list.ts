@@ -9,6 +9,7 @@ import { PropertyService } from '../../../core/services/property.service';
 import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
+import { PropertyMedia } from '../../../shared/components/property-media/property-media';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
 import { StatusBadge } from '../../../shared/components/status-badge/status-badge';
 import { ToastService } from '../../../shared/components/toast/toast.service';
@@ -21,6 +22,7 @@ import { Property, PropertyStatus } from '../../../shared/models/property';
     TranslocoPipe,
     DecimalPipe,
     Icon,
+    PropertyMedia,
     Skeleton,
     StatusBadge,
     EmptyState,

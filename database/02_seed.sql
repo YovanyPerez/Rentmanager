@@ -1,5 +1,7 @@
 -- Demo data for local development (no users: the admin account is created in Phase 5 with a BCrypt hash).
 
+SET NAMES utf8mb4;
+
 INSERT INTO owners (id, full_name, email, phone)
 VALUES (1, 'Ana Propietaria', 'ana@example.com', '+34 600 111 222');
 

@@ -14,6 +14,7 @@ describe('PropertyService', () => {
     address: 'Calle Mayor 1',
     city: 'Madrid',
     description: null,
+    imageUrl: null,
     monthlyRent: 1200,
     status: 'AVAILABLE' as const,
     createdAt: '2030-01-01T00:00:00Z',
@@ -41,7 +42,7 @@ describe('PropertyService', () => {
 
   it('should create a property', () => {
     service
-      .create({ ownerId: 2, address: 'A', city: 'B', description: null, monthlyRent: 100 })
+      .create({ ownerId: 2, address: 'A', city: 'B', description: null, imageUrl: null, monthlyRent: 100 })
       .subscribe((created) => expect(created.id).toBe(1));
 
     const request = http.expectOne({ method: 'POST', url: '/api/properties' });
@@ -50,6 +51,7 @@ describe('PropertyService', () => {
       address: 'A',
       city: 'B',
       description: null,
+      imageUrl: null,
       monthlyRent: 100,
     });
     request.flush(property);

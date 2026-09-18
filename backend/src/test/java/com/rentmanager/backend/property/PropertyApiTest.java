@@ -205,6 +205,36 @@ class PropertyApiTest {
         .andExpect(jsonPath("$.code").value("INVALID_STATE_TRANSITION"));
   }
 
+  @Test
+  void imageUrlIsStoredAndValidated() throws Exception {
+    long ownerId = createOwner(OWNER);
+    String token = login(ADMIN, Role.ADMIN);
+
+    String response = mockMvc.perform(post("/api/properties")
+            .header("Authorization", "Bearer " + token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Con foto","city":"Madrid","imageUrl":"https://example.com/foto.jpg","monthlyRent":900.00}
+                """.formatted(ownerId)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.imageUrl").value("https://example.com/foto.jpg"))
+        .andReturn().getResponse().getContentAsString();
+    long propertyId = ((Number) JsonPath.read(response, "$.id")).longValue();
+
+    mockMvc.perform(get("/api/properties/{id}", propertyId).header("Authorization", "Bearer " + token))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.imageUrl").value("https://example.com/foto.jpg"));
+
+    mockMvc.perform(post("/api/properties")
+            .header("Authorization", "Bearer " + token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"X","city":"Y","imageUrl":"%s","monthlyRent":100.00}
+                """.formatted(ownerId, "a".repeat(501))))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+  }
+
   private void patchStatus(String token, long propertyId, String status, int expected) throws Exception {
     mockMvc.perform(patch("/api/properties/{id}/status", propertyId)
             .header("Authorization", "Bearer " + token)

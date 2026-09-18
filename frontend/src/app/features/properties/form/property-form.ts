@@ -36,6 +36,7 @@ export class PropertyForm implements OnInit {
     address: ['', [Validators.required]],
     city: ['', [Validators.required]],
     description: [''],
+    imageUrl: ['', [Validators.maxLength(500)]],
     monthlyRent: [0, [Validators.required, Validators.min(0.01)]],
   });
 
@@ -56,6 +57,7 @@ export class PropertyForm implements OnInit {
             address: property.address,
             city: property.city,
             description: property.description ?? '',
+            imageUrl: property.imageUrl ?? '',
             monthlyRent: property.monthlyRent,
           }),
         error: (error: unknown) => this.errorKey.set(this.apiErrors.keyOf(error)),
@@ -63,7 +65,7 @@ export class PropertyForm implements OnInit {
     }
   }
 
-  protected fieldError(field: 'ownerId' | 'address' | 'city' | 'monthlyRent'): string | null {
+  protected fieldError(field: 'ownerId' | 'address' | 'city' | 'imageUrl' | 'monthlyRent'): string | null {
     return fieldErrorMessage(this.form.controls[field], this.i18n);
   }
 
@@ -81,6 +83,7 @@ export class PropertyForm implements OnInit {
       address: value.address,
       city: value.city,
       description: value.description.trim() === '' ? null : value.description,
+      imageUrl: value.imageUrl.trim() === '' ? null : value.imageUrl.trim(),
       monthlyRent: value.monthlyRent,
     };
     const id = this.id();
@@ -88,9 +91,13 @@ export class PropertyForm implements OnInit {
       id === null ? this.propertiesApi.create(request) : this.propertiesApi.update(id, request);
 
     save.subscribe({
-      next: () => {
+      next: (property) => {
         this.toasts.success(id === null ? 'messages.propertyCreated' : 'messages.propertyUpdated');
-        void this.router.navigateByUrl('/properties');
+        if (id === null) {
+          void this.router.navigate(['/properties', property.id, 'edit']);
+        } else {
+          void this.router.navigateByUrl('/properties');
+        }
       },
       error: (error: unknown) => {
         this.errorKey.set(this.apiErrors.keyOf(error));

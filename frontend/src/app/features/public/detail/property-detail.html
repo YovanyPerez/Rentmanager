@@ -16,7 +16,7 @@
     <div class="detail-layout">
       <div class="entity-card">
         <div class="entity-card__media detail-layout__media">
-          <app-icon name="building" [size]="56" />
+          <app-property-media [url]="item.imageUrl" [alt]="item.address" [size]="56" />
           <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>
         </div>
       </div>

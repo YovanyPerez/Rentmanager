@@ -119,6 +119,30 @@ async function ensureProperty(adminToken, ownerId, data) {
   return api('/properties', { method: 'POST', token: adminToken, body: { ownerId, ...data } });
 }
 
+async function assignImage(adminToken, property, imageUrl) {
+  if (property.imageUrl) return;
+  await api(`/properties/${property.id}`, {
+    method: 'PUT',
+    token: adminToken,
+    body: {
+      ownerId: property.ownerId,
+      address: property.address,
+      city: property.city,
+      description: property.description,
+      imageUrl,
+      monthlyRent: property.monthlyRent,
+    },
+  });
+}
+
+const DEMO_PHOTOS = {
+  'Calle Mayor 12, 3ºA': '/assets/properties/cocina-madrid.jpg',
+  'Avenida del Puerto 8': '/assets/properties/apartamento-berlin.jpg',
+  'Calle Alcalá 45, 2ºB': '/assets/properties/piso-madrid.jpg',
+  'Avenida del Puerto 8, 3ºA': '/assets/properties/piso-valencia.jpg',
+  'Camino de la Sierra 21': '/assets/properties/casa-sevilla.jpg',
+};
+
 async function ensureContract(adminToken, request) {
   const contracts = await api('/contracts', { token: adminToken });
   return contracts.find(
@@ -166,6 +190,12 @@ async function seedDemoData() {
     description: 'Casa adosada con patio y garaje.',
     monthlyRent: 780,
   });
+
+  const demoProperties = await api('/properties', { token: adminToken });
+  for (const property of demoProperties) {
+    const photo = DEMO_PHOTOS[property.address];
+    if (photo) await assignImage(adminToken, property, photo);
+  }
 
   let activeContract = await ensureContract(adminToken, {
     propertyId: rented.id,

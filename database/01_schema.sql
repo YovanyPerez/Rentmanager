@@ -46,6 +46,7 @@ CREATE TABLE properties (
   address      VARCHAR(255)   NOT NULL,
   city         VARCHAR(100)   NOT NULL,
   description  VARCHAR(2000)  NULL,
+  image_url    VARCHAR(500)   NULL,
   monthly_rent DECIMAL(10, 2) NOT NULL,
   status       VARCHAR(20)    NOT NULL DEFAULT 'AVAILABLE',
   created_at   TIMESTAMP(6)   NOT NULL DEFAULT CURRENT_TIMESTAMP(6),

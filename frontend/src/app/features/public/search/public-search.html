@@ -25,7 +25,7 @@
       @for (property of results(); track property.id) {
         <a class="entity-card" [routerLink]="['/property', property.id]" animate.enter="enter-animation">
           <div class="entity-card__media">
-            <app-icon name="building" [size]="36" />
+            <app-property-media [url]="property.imageUrl" [alt]="property.address" />
             <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>
           </div>
           <div class="entity-card__body">

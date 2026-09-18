@@ -7,6 +7,7 @@ export interface Property {
   address: string;
   city: string;
   description: string | null;
+  imageUrl: string | null;
   monthlyRent: number;
   status: PropertyStatus;
   createdAt: string;
@@ -18,5 +19,6 @@ export interface PropertyRequest {
   address: string;
   city: string;
   description: string | null;
+  imageUrl: string | null;
   monthlyRent: number;
 }

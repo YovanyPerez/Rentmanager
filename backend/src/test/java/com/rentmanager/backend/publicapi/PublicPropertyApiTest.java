@@ -62,11 +62,14 @@ class PublicPropertyApiTest {
   @Test
   void availableDetailReturnsPublicData() throws Exception {
     Property property = newProperty("Calle Detalle 3", "DetalleCiudad", PropertyStatus.AVAILABLE);
+    property.setImageUrl("/assets/properties/demo.jpg");
+    properties.save(property);
 
     mockMvc.perform(get("/api/public/properties/{id}", property.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.address").value("Calle Detalle 3"))
         .andExpect(jsonPath("$.monthlyRent").value(1000.00))
+        .andExpect(jsonPath("$.imageUrl").value("/assets/properties/demo.jpg"))
         .andExpect(jsonPath("$.status").value("AVAILABLE"))
         .andExpect(jsonPath("$.ownerId").doesNotExist());
   }
