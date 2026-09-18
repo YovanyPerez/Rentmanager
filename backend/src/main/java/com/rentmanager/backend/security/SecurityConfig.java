@@ -40,8 +40,12 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/auth/register", "/api/auth/login", "/api/health").permitAll()
             .requestMatchers("/api/public/**").permitAll()
+            .requestMatchers("/uploads/**").permitAll()
             .requestMatchers("/api/users/**").hasRole("ADMIN")
             .requestMatchers("/api/owners/**", "/api/tenants/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/api/properties/*/images").hasAnyRole("ADMIN", "OWNER")
+            .requestMatchers(HttpMethod.PUT, "/api/properties/*/images/**").hasAnyRole("ADMIN", "OWNER")
+            .requestMatchers(HttpMethod.DELETE, "/api/properties/*/images/**").hasAnyRole("ADMIN", "OWNER")
             .requestMatchers(HttpMethod.POST, "/api/properties/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/api/properties/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PATCH, "/api/properties/**").hasRole("ADMIN")

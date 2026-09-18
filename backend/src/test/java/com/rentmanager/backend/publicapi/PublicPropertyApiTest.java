@@ -6,8 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.rentmanager.backend.domain.Owner;
 import com.rentmanager.backend.domain.Property;
+import com.rentmanager.backend.domain.PropertyImage;
 import com.rentmanager.backend.domain.PropertyStatus;
 import com.rentmanager.backend.repository.OwnerRepository;
+import com.rentmanager.backend.repository.PropertyImageRepository;
 import com.rentmanager.backend.repository.PropertyRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,6 +33,9 @@ class PublicPropertyApiTest {
 
   @Autowired
   private PropertyRepository properties;
+
+  @Autowired
+  private PropertyImageRepository propertyImages;
 
   @Test
   void anonymousSeesOnlyAvailablePropertiesWithoutOwnerData() throws Exception {
@@ -62,14 +67,19 @@ class PublicPropertyApiTest {
   @Test
   void availableDetailReturnsPublicData() throws Exception {
     Property property = newProperty("Calle Detalle 3", "DetalleCiudad", PropertyStatus.AVAILABLE);
-    property.setImageUrl("/assets/properties/demo.jpg");
-    properties.save(property);
+    PropertyImage image = new PropertyImage();
+    image.setProperty(property);
+    image.setFileName("demo-detail.png");
+    image.setContentType("image/png");
+    image.setPosition(0);
+    propertyImages.save(image);
 
     mockMvc.perform(get("/api/public/properties/{id}", property.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.address").value("Calle Detalle 3"))
         .andExpect(jsonPath("$.monthlyRent").value(1000.00))
-        .andExpect(jsonPath("$.imageUrl").value("/assets/properties/demo.jpg"))
+        .andExpect(jsonPath("$.imageUrl").value("/uploads/properties/demo-detail.png"))
+        .andExpect(jsonPath("$.images.length()").value(1))
         .andExpect(jsonPath("$.status").value("AVAILABLE"))
         .andExpect(jsonPath("$.ownerId").doesNotExist());
   }

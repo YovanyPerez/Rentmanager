@@ -46,7 +46,6 @@ CREATE TABLE properties (
   address      VARCHAR(255)   NOT NULL,
   city         VARCHAR(100)   NOT NULL,
   description  VARCHAR(2000)  NULL,
-  image_url    VARCHAR(500)   NULL,
   monthly_rent DECIMAL(10, 2) NOT NULL,
   status       VARCHAR(20)    NOT NULL DEFAULT 'AVAILABLE',
   created_at   TIMESTAMP(6)   NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
@@ -57,6 +56,19 @@ CREATE TABLE properties (
   CONSTRAINT fk_properties_owner FOREIGN KEY (owner_id) REFERENCES owners (id),
   CONSTRAINT chk_properties_rent_positive CHECK (monthly_rent > 0),
   CONSTRAINT chk_properties_status CHECK (status IN ('AVAILABLE', 'RENTED', 'MAINTENANCE', 'INACTIVE'))
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE property_images (
+  id           BIGINT         NOT NULL AUTO_INCREMENT,
+  property_id  BIGINT         NOT NULL,
+  file_name    VARCHAR(255)   NOT NULL,
+  content_type VARCHAR(100)   NOT NULL,
+  position     INT            NOT NULL DEFAULT 0,
+  created_at   TIMESTAMP(6)   NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_property_images_file (file_name),
+  KEY idx_property_images_property (property_id, position),
+  CONSTRAINT fk_property_images_property FOREIGN KEY (property_id) REFERENCES properties (id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 CREATE TABLE contracts (

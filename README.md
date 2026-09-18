@@ -146,7 +146,7 @@ Listado con filtro por estado. Desde cada tarjeta el administrador puede cambiar
 
 ![Listado de propiedades](docs/images/09-admin-propiedades.png)
 
-Formulario de alta de propiedad, con propietario, dirección, ciudad, descripción, foto (URL opcional) y renta mensual. Al crear una propiedad se redirige a su edición para poder añadir o cambiar la foto. Si no se indica foto, la tarjeta muestra el marcador con el icono.
+Formulario de alta de propiedad, con propietario, dirección, ciudad, descripción y renta mensual. En la edición se gestiona la galería de fotos: se suben desde el almacenamiento (JPEG, PNG o WebP, hasta 5 MB y máximo 6 por propiedad), se elige la portada, se reordenan y se eliminan. La portada es la foto que aparece en las tarjetas y en el buscador; si no hay fotos, se muestra el marcador con el icono.
 
 ![Nueva propiedad](docs/images/10-admin-propiedad-nueva.png)
 

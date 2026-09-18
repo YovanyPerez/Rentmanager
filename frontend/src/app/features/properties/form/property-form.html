@@ -28,17 +28,61 @@
     <label for="description">{{ 'properties.description' | transloco }}</label>
     <textarea id="description" formControlName="description"></textarea>
 
-    <label for="imageUrl">{{ 'properties.imageUrl' | transloco }}</label>
-    <input id="imageUrl" type="text" formControlName="imageUrl" />
-    <p class="field-hint">{{ 'properties.imageUrlHint' | transloco }}</p>
-    @if (fieldError('imageUrl'); as message) {
-      <p class="field-error">{{ message }}</p>
-    }
-
     <label for="monthlyRent">{{ 'properties.monthlyRent' | transloco }}</label>
     <input id="monthlyRent" type="number" step="0.01" formControlName="monthlyRent" />
     @if (fieldError('monthlyRent'); as message) {
       <p class="field-error">{{ message }}</p>
+    }
+
+    @if (id() !== null) {
+      <h2>{{ 'properties.photos' | transloco }}</h2>
+      <p class="field-hint">{{ 'properties.photoHint' | transloco }}</p>
+
+      @if (images().length > 0) {
+        <div class="photo-grid">
+          @for (image of images(); track image.id; let first = $first; let index = $index) {
+            <figure class="photo">
+              <img [src]="image.url" [alt]="'properties.photoAlt' | transloco" />
+              @if (first) {
+                <span class="photo__cover">{{ 'properties.cover' | transloco }}</span>
+              }
+              <div class="photo__actions">
+                @if (!first) {
+                  <button type="button" (click)="makeCover(image)">{{ 'properties.makeCover' | transloco }}</button>
+                }
+                <button type="button" [disabled]="index === 0" [attr.aria-label]="'properties.moveUp' | transloco" (click)="moveImage(image, -1)">
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  [disabled]="index === images().length - 1"
+                  [attr.aria-label]="'properties.moveDown' | transloco"
+                  (click)="moveImage(image, 1)"
+                >
+                  ↓
+                </button>
+                <button type="button" (click)="removeImage(image)">{{ 'properties.removePhoto' | transloco }}</button>
+              </div>
+            </figure>
+          }
+        </div>
+      } @else {
+        <p class="field-hint">{{ 'properties.noPhotos' | transloco }}</p>
+      }
+
+      <label class="btn btn--secondary" for="photoInput">{{ 'properties.addPhoto' | transloco }}</label>
+      <input
+        id="photoInput"
+        class="photo-input"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        multiple
+        [disabled]="uploading()"
+        (change)="onFilesSelected($event)"
+      />
+      @if (uploading()) {
+        <p class="field-hint">{{ 'properties.uploading' | transloco }}</p>
+      }
     }
 
     @if (errorKey(); as key) {

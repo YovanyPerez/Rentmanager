@@ -6,13 +6,13 @@ import { LanguageService } from '../../../core/i18n/language.service';
 import { PublicPropertyService } from '../../../core/services/public-property.service';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { Icon } from '../../../shared/components/icon/icon';
-import { PropertyMedia } from '../../../shared/components/property-media/property-media';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
+import { PropertyImage } from '../../../shared/models/property';
 import { PublicProperty } from '../../../shared/models/public-property';
 
 @Component({
   selector: 'app-property-detail',
-  imports: [RouterLink, TranslocoPipe, DecimalPipe, Icon, PropertyMedia, Skeleton, EmptyState],
+  imports: [RouterLink, TranslocoPipe, DecimalPipe, Icon, Skeleton, EmptyState],
   templateUrl: './property-detail.html',
 })
 export class PropertyDetail implements OnInit {
@@ -21,6 +21,7 @@ export class PropertyDetail implements OnInit {
   protected readonly i18n = inject(LanguageService);
 
   protected readonly property = signal<PublicProperty | null>(null);
+  protected readonly activeImage = signal<PropertyImage | null>(null);
   protected readonly loading = signal(true);
   protected readonly notFound = signal(false);
 
@@ -29,6 +30,7 @@ export class PropertyDetail implements OnInit {
     this.publicApi.get(id).subscribe({
       next: (property) => {
         this.property.set(property);
+        this.activeImage.set(property.images[0] ?? null);
         this.loading.set(false);
       },
       error: () => {

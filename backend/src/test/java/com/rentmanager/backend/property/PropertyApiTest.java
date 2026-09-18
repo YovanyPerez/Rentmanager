@@ -139,6 +139,70 @@ class PropertyApiTest {
   }
 
   @Test
+  void ownerCanUpdateOwnPropertyDataAndStatus() throws Exception {
+    long ownerId = createOwner(OWNER);
+    String adminToken = login(ADMIN, Role.ADMIN);
+    long propertyId = createProperty(adminToken, ownerId, "Owner edit 1", "900.00");
+    String ownerToken = login(OWNER, Role.OWNER);
+
+    mockMvc.perform(put("/api/properties/{id}", propertyId)
+            .header("Authorization", "Bearer " + ownerToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Owner edit 1 bis","city":"Bilbao","monthlyRent":950.00}
+                """.formatted(ownerId)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.address").value("Owner edit 1 bis"))
+        .andExpect(jsonPath("$.city").value("Bilbao"));
+
+    mockMvc.perform(patch("/api/properties/{id}/status", propertyId)
+            .header("Authorization", "Bearer " + ownerToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"status":"MAINTENANCE"}
+                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("MAINTENANCE"));
+  }
+
+  @Test
+  void ownerCannotEditForeignPropertyOrReassignOwner() throws Exception {
+    long ownerId = createOwner(OWNER);
+    long otherOwnerId = createOwner(OTHER_OWNER);
+    String adminToken = login(ADMIN, Role.ADMIN);
+    long foreignPropertyId = createProperty(adminToken, otherOwnerId, "Foreign edit 1", "900.00");
+    long ownPropertyId = createProperty(adminToken, ownerId, "Own edit 2", "900.00");
+    String ownerToken = login(OWNER, Role.OWNER);
+
+    mockMvc.perform(put("/api/properties/{id}", foreignPropertyId)
+            .header("Authorization", "Bearer " + ownerToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Hacked","city":"X","monthlyRent":1.00}
+                """.formatted(otherOwnerId)))
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.code").value("FORBIDDEN"));
+
+    mockMvc.perform(patch("/api/properties/{id}/status", foreignPropertyId)
+            .header("Authorization", "Bearer " + ownerToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"status":"MAINTENANCE"}
+                """))
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.code").value("FORBIDDEN"));
+
+    mockMvc.perform(put("/api/properties/{id}", ownPropertyId)
+            .header("Authorization", "Bearer " + ownerToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"ownerId":%d,"address":"Own edit 2","city":"Madrid","monthlyRent":900.00}
+                """.formatted(otherOwnerId)))
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.code").value("FORBIDDEN"));
+  }
+
+  @Test
   void tenantCannotReadProperties() throws Exception {
     String token = login(TENANT, Role.TENANT);
 
@@ -206,33 +270,18 @@ class PropertyApiTest {
   }
 
   @Test
-  void imageUrlIsStoredAndValidated() throws Exception {
+  void newlyCreatedPropertyHasEmptyGallery() throws Exception {
     long ownerId = createOwner(OWNER);
     String token = login(ADMIN, Role.ADMIN);
-
-    String response = mockMvc.perform(post("/api/properties")
-            .header("Authorization", "Bearer " + token)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {"ownerId":%d,"address":"Con foto","city":"Madrid","imageUrl":"https://example.com/foto.jpg","monthlyRent":900.00}
-                """.formatted(ownerId)))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.imageUrl").value("https://example.com/foto.jpg"))
-        .andReturn().getResponse().getContentAsString();
-    long propertyId = ((Number) JsonPath.read(response, "$.id")).longValue();
-
-    mockMvc.perform(get("/api/properties/{id}", propertyId).header("Authorization", "Bearer " + token))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.imageUrl").value("https://example.com/foto.jpg"));
 
     mockMvc.perform(post("/api/properties")
             .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
-                {"ownerId":%d,"address":"X","city":"Y","imageUrl":"%s","monthlyRent":100.00}
-                """.formatted(ownerId, "a".repeat(501))))
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+                {"ownerId":%d,"address":"Sin fotos","city":"Madrid","monthlyRent":900.00}
+                """.formatted(ownerId)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.images.length()").value(0));
   }
 
   private void patchStatus(String token, long propertyId, String status, int expected) throws Exception {

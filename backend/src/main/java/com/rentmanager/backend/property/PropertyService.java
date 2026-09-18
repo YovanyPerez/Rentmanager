@@ -2,6 +2,7 @@ package com.rentmanager.backend.property;
 
 import com.rentmanager.backend.domain.Owner;
 import com.rentmanager.backend.domain.Property;
+import com.rentmanager.backend.domain.PropertyImage;
 import com.rentmanager.backend.domain.PropertyStatus;
 import com.rentmanager.backend.domain.Role;
 import com.rentmanager.backend.domain.User;
@@ -31,11 +32,14 @@ public class PropertyService {
 
   private final PropertyRepository properties;
   private final OwnerRepository owners;
+  private final PropertyImageService imageService;
   private final CurrentUser currentUser;
 
-  public PropertyService(PropertyRepository properties, OwnerRepository owners, CurrentUser currentUser) {
+  public PropertyService(PropertyRepository properties, OwnerRepository owners,
+      PropertyImageService imageService, CurrentUser currentUser) {
     this.properties = properties;
     this.owners = owners;
+    this.imageService = imageService;
     this.currentUser = currentUser;
   }
 
@@ -45,7 +49,11 @@ public class PropertyService {
     List<Property> found = user.getRole() == Role.ADMIN
         ? properties.findAll()
         : properties.findAllByOwnerUserId(user.getId());
-    return found.stream().map(PropertyResponse::from).toList();
+    Map<Long, List<PropertyImage>> images =
+        imageService.byPropertyIds(found.stream().map(Property::getId).toList());
+    return found.stream()
+        .map(property -> PropertyResponse.from(property, images.getOrDefault(property.getId(), List.of())))
+        .toList();
   }
 
   @Transactional(readOnly = true)
@@ -55,7 +63,7 @@ public class PropertyService {
     if (user.getRole() != Role.ADMIN && !isOwnedBy(property, user)) {
       throw new ApiException(ErrorCode.FORBIDDEN);
     }
-    return PropertyResponse.from(property);
+    return PropertyResponse.from(property, imageService.byPropertyId(property.getId()));
   }
 
   @Transactional
@@ -65,7 +73,7 @@ public class PropertyService {
     applyRequest(property, request);
     property.setStatus(PropertyStatus.AVAILABLE);
     properties.save(property);
-    return PropertyResponse.from(property);
+    return PropertyResponse.from(property, List.of());
   }
 
   @Transactional
@@ -75,22 +83,23 @@ public class PropertyService {
       property.setOwner(findOwner(request.ownerId()));
     }
     applyRequest(property, request);
-    return PropertyResponse.from(property);
+    return PropertyResponse.from(property, imageService.byPropertyId(property.getId()));
   }
 
   @Transactional
   public PropertyResponse changeStatus(Long id, PropertyStatus target) {
     Property property = find(id);
+    List<PropertyImage> images = imageService.byPropertyId(property.getId());
     PropertyStatus current = property.getStatus();
     if (current == target) {
-      return PropertyResponse.from(property);
+      return PropertyResponse.from(property, images);
     }
     if (target == PropertyStatus.RENTED
         || !ALLOWED_TRANSITIONS.getOrDefault(current, Set.of()).contains(target)) {
       throw new ApiException(ErrorCode.INVALID_STATE_TRANSITION);
     }
     property.setStatus(target);
-    return PropertyResponse.from(property);
+    return PropertyResponse.from(property, images);
   }
 
   /** DELETE deactivates the property; rented properties cannot be deactivated. */
@@ -120,7 +129,6 @@ public class PropertyService {
     property.setAddress(request.address());
     property.setCity(request.city());
     property.setDescription(request.description());
-    property.setImageUrl(request.imageUrl());
     property.setMonthlyRent(request.monthlyRent());
   }
 }

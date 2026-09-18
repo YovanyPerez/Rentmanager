@@ -111,8 +111,17 @@
     "address": "Dirección",
     "city": "Ciudad",
     "description": "Descripción",
-    "imageUrl": "Foto (URL)",
-    "imageUrlHint": "Opcional: URL de la imagen o ruta local como /assets/properties/foto.jpg",
+    "photos": "Fotos",
+    "photoHint": "JPEG, PNG o WebP, hasta 5 MB por foto (máximo 6).",
+    "addPhoto": "Añadir foto",
+    "noPhotos": "Sin fotos todavía.",
+    "cover": "Portada",
+    "makeCover": "Hacer portada",
+    "removePhoto": "Quitar",
+    "moveUp": "Subir",
+    "moveDown": "Bajar",
+    "uploading": "Subiendo…",
+    "photoAlt": "Foto de la propiedad",
     "monthlyRent": "Renta mensual",
     "perMonth": "/mes",
     "owner": "Propietario",
@@ -213,7 +222,8 @@
     "paymentPaid": "Pago marcado como pagado.",
     "paymentCancelled": "Pago cancelado.",
     "maintenanceCreated": "Solicitud creada.",
-    "maintenanceUpdated": "Solicitud actualizada."
+    "maintenanceUpdated": "Solicitud actualizada.",
+    "photoRemoved": "Foto eliminada."
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -265,6 +275,7 @@
     "OWNER_NOT_FOUND": "Propietario no encontrado.",
     "TENANT_NOT_FOUND": "Inquilino no encontrado.",
     "PROPERTY_NOT_FOUND": "Propiedad no encontrada.",
+    "IMAGE_NOT_FOUND": "La foto no existe.",
     "CONTRACT_NOT_FOUND": "Contrato no encontrado.",
     "PAYMENT_NOT_FOUND": "Pago no encontrado.",
     "MAINTENANCE_NOT_FOUND": "Solicitud no encontrada.",
@@ -277,6 +288,9 @@
     "OWNER_HAS_PROPERTIES": "El propietario tiene propiedades asociadas.",
     "TENANT_HAS_CONTRACTS": "El inquilino tiene contratos asociados.",
     "PAYMENT_ALREADY_EXISTS": "Ya existe un pago con esa fecha para el contrato.",
+    "IMAGE_LIMIT_REACHED": "Máximo 6 fotos por propiedad.",
+    "UNSUPPORTED_IMAGE_TYPE": "Formato de imagen no válido. Usa JPEG, PNG o WebP.",
+    "FILE_TOO_LARGE": "La imagen supera el límite de 5 MB.",
     "INTERNAL_ERROR": "Error interno del servidor."
   },
   "validation": {

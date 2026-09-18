@@ -119,28 +119,32 @@ async function ensureProperty(adminToken, ownerId, data) {
   return api('/properties', { method: 'POST', token: adminToken, body: { ownerId, ...data } });
 }
 
-async function assignImage(adminToken, property, imageUrl) {
-  if (property.imageUrl) return;
-  await api(`/properties/${property.id}`, {
-    method: 'PUT',
-    token: adminToken,
-    body: {
-      ownerId: property.ownerId,
-      address: property.address,
-      city: property.city,
-      description: property.description,
-      imageUrl,
-      monthlyRent: property.monthlyRent,
-    },
+async function uploadImage(token, property, fileName) {
+  const data = readFileSync(resolve(ROOT, 'frontend', 'public', 'assets', 'properties', fileName));
+  const form = new FormData();
+  form.append('file', new Blob([data], { type: 'image/jpeg' }), fileName);
+  const res = await fetch(`${API}/properties/${property.id}/images`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: form,
   });
+  if (!res.ok) {
+    throw new Error(`POST /properties/${property.id}/images -> ${res.status} ${await res.text()}`);
+  }
+}
+
+async function ensurePhoto(adminToken, property) {
+  const fileName = DEMO_PHOTOS[property.address];
+  if (!fileName || (property.images?.length ?? 0) > 0) return;
+  await uploadImage(adminToken, property, fileName);
 }
 
 const DEMO_PHOTOS = {
-  'Calle Mayor 12, 3ºA': '/assets/properties/cocina-madrid.jpg',
-  'Avenida del Puerto 8': '/assets/properties/apartamento-berlin.jpg',
-  'Calle Alcalá 45, 2ºB': '/assets/properties/piso-madrid.jpg',
-  'Avenida del Puerto 8, 3ºA': '/assets/properties/piso-valencia.jpg',
-  'Camino de la Sierra 21': '/assets/properties/casa-sevilla.jpg',
+  'Calle Mayor 12, 3ºA': 'cocina-madrid.jpg',
+  'Avenida del Puerto 8': 'apartamento-berlin.jpg',
+  'Calle Alcalá 45, 2ºB': 'piso-madrid.jpg',
+  'Avenida del Puerto 8, 3ºA': 'piso-valencia.jpg',
+  'Camino de la Sierra 21': 'casa-sevilla.jpg',
 };
 
 async function ensureContract(adminToken, request) {
@@ -193,8 +197,7 @@ async function seedDemoData() {
 
   const demoProperties = await api('/properties', { token: adminToken });
   for (const property of demoProperties) {
-    const photo = DEMO_PHOTOS[property.address];
-    if (photo) await assignImage(adminToken, property, photo);
+    await ensurePhoto(adminToken, property);
   }
 
   let activeContract = await ensureContract(adminToken, {
@@ -308,6 +311,18 @@ async function seedDemoData() {
 }
 
 async function main() {
+  for (const [label, url] of [
+    ['API', 'http://localhost:8080/api/health'],
+    ['web', WEB],
+  ]) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(String(res.status));
+    } catch {
+      throw new Error(`El stack no está arrancado (${label}: ${url}). Ejecuta .\\dev.cmd y reintenta.`);
+    }
+  }
+
   mkdirSync(OUT, { recursive: true });
 
   console.log('Sembrando datos demo...');

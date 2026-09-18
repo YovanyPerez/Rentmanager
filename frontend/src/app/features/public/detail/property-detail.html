@@ -16,9 +16,26 @@
     <div class="detail-layout">
       <div class="entity-card">
         <div class="entity-card__media detail-layout__media">
-          <app-property-media [url]="item.imageUrl" [alt]="item.address" [size]="56" />
+          @if (activeImage(); as image) {
+            <img [src]="image.url" [alt]="item.address" />
+          } @else {
+            <app-icon name="building" [size]="56" />
+          }
           <span class="chip chip--success">{{ 'enums.propertyStatus.AVAILABLE' | transloco }}</span>
         </div>
+        @if (item.images.length > 1) {
+          <div class="detail-thumbs">
+            @for (image of item.images; track image.id) {
+              <button
+                type="button"
+                [class.is-active]="activeImage()?.id === image.id"
+                (click)="activeImage.set(image)"
+              >
+                <img [src]="image.url" [alt]="item.address" />
+              </button>
+            }
+          </div>
+        }
       </div>
 
       <div class="panel">

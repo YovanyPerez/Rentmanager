@@ -14,6 +14,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -67,6 +68,14 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleDataIntegrity(DataIntegrityViolationException exception) {
     log.warn("Data integrity violation: {}", exception.getMostSpecificCause().getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse.of(ErrorCode.CONFLICT));
+  }
+
+  /** Multipart requests over the configured size limit are rejected by the container. */
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ErrorResponse> handleMaxUploadSize(MaxUploadSizeExceededException exception) {
+    log.warn("Upload too large: {}", exception.getMessage());
+    return ResponseEntity.status(ErrorCode.FILE_TOO_LARGE.status())
+        .body(ErrorResponse.of(ErrorCode.FILE_TOO_LARGE));
   }
 
   private static ErrorCode codeFor(HttpStatusCode status) {

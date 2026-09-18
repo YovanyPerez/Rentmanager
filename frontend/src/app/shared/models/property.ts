@@ -1,5 +1,11 @@
 export type PropertyStatus = 'AVAILABLE' | 'RENTED' | 'MAINTENANCE' | 'INACTIVE';
 
+export interface PropertyImage {
+  id: number;
+  url: string;
+  position: number;
+}
+
 export interface Property {
   id: number;
   ownerId: number;
@@ -8,6 +14,7 @@ export interface Property {
   city: string;
   description: string | null;
   imageUrl: string | null;
+  images: PropertyImage[];
   monthlyRent: number;
   status: PropertyStatus;
   createdAt: string;
@@ -19,6 +26,5 @@ export interface PropertyRequest {
   address: string;
   city: string;
   description: string | null;
-  imageUrl: string | null;
   monthlyRent: number;
 }

@@ -31,12 +31,16 @@ function Test-Port($port) {
   return [bool](Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue)
 }
 
+function Test-Docker {
+  try { return [bool](docker info --format '{{.ServerVersion}}' 2>$null) } catch { return $false }
+}
+
 # 1. Docker / MySQL
 Log 'Docker / MySQL'
-if (-not (docker info --format '{{.ServerVersion}}' 2>$null)) {
+if (-not (Test-Docker)) {
   Log '  Docker Desktop apagado, arrancando...'
   Start-Process "$env:LOCALAPPDATA\Programs\DockerDesktop\Docker Desktop.exe"
-  Wait-Until { docker info --format '{{.ServerVersion}}' 2>$null } 200 'Docker Desktop'
+  Wait-Until { Test-Docker } 200 'Docker Desktop'
 }
 docker compose up -d | Out-Null
 Wait-Until { (docker inspect --format '{{.State.Health.Status}}' rentmanager-mysql 2>$null) -eq 'healthy' } 150 'MySQL healthy'

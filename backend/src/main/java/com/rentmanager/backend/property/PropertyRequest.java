@@ -13,5 +13,4 @@ public record PropertyRequest(
     @NotBlank @Size(max = 255) String address,
     @NotBlank @Size(max = 100) String city,
     @Size(max = 2000) String description,
-    @Size(max = 500) String imageUrl,
     @NotNull @DecimalMin("0.01") @Digits(integer = 8, fraction = 2) BigDecimal monthlyRent) {}

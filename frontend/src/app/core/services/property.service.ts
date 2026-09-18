@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Property, PropertyRequest, PropertyStatus } from '../../shared/models/property';
+import { Property, PropertyImage, PropertyRequest, PropertyStatus } from '../../shared/models/property';
 
 @Injectable({ providedIn: 'root' })
 export class PropertyService {
@@ -29,5 +29,23 @@ export class PropertyService {
 
   deactivate(id: number): Observable<void> {
     return this.http.delete<void>(`/api/properties/${id}`);
+  }
+
+  uploadImage(id: number, file: File): Observable<PropertyImage> {
+    const data = new FormData();
+    data.append('file', file);
+    return this.http.post<PropertyImage>(`/api/properties/${id}/images`, data);
+  }
+
+  deleteImage(id: number, imageId: number): Observable<void> {
+    return this.http.delete<void>(`/api/properties/${id}/images/${imageId}`);
+  }
+
+  setCover(id: number, imageId: number): Observable<PropertyImage[]> {
+    return this.http.put<PropertyImage[]>(`/api/properties/${id}/images/${imageId}/cover`, {});
+  }
+
+  reorderImages(id: number, imageIds: number[]): Observable<PropertyImage[]> {
+    return this.http.put<PropertyImage[]>(`/api/properties/${id}/images/order`, { imageIds });
   }
 }

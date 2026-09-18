@@ -111,8 +111,17 @@
     "address": "Address",
     "city": "City",
     "description": "Description",
-    "imageUrl": "Photo (URL)",
-    "imageUrlHint": "Optional: image URL or local path like /assets/properties/photo.jpg",
+    "photos": "Photos",
+    "photoHint": "JPEG, PNG or WebP, up to 5 MB per photo (maximum 6).",
+    "addPhoto": "Add photo",
+    "noPhotos": "No photos yet.",
+    "cover": "Cover",
+    "makeCover": "Make cover",
+    "removePhoto": "Remove",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "uploading": "Uploading…",
+    "photoAlt": "Property photo",
     "monthlyRent": "Monthly rent",
     "perMonth": "/mo",
     "owner": "Owner",
@@ -213,7 +222,8 @@
     "paymentPaid": "Payment marked as paid.",
     "paymentCancelled": "Payment cancelled.",
     "maintenanceCreated": "Request created.",
-    "maintenanceUpdated": "Request updated."
+    "maintenanceUpdated": "Request updated.",
+    "photoRemoved": "Photo removed."
   },
   "notFound": {
     "title": "Page not found",
@@ -265,6 +275,7 @@
     "OWNER_NOT_FOUND": "Owner not found.",
     "TENANT_NOT_FOUND": "Tenant not found.",
     "PROPERTY_NOT_FOUND": "Property not found.",
+    "IMAGE_NOT_FOUND": "The photo does not exist.",
     "CONTRACT_NOT_FOUND": "Contract not found.",
     "PAYMENT_NOT_FOUND": "Payment not found.",
     "MAINTENANCE_NOT_FOUND": "Request not found.",
@@ -277,6 +288,9 @@
     "OWNER_HAS_PROPERTIES": "The owner has associated properties.",
     "TENANT_HAS_CONTRACTS": "The tenant has associated contracts.",
     "PAYMENT_ALREADY_EXISTS": "A payment with that date already exists for the contract.",
+    "IMAGE_LIMIT_REACHED": "Maximum 6 photos per property.",
+    "UNSUPPORTED_IMAGE_TYPE": "Invalid image format. Use JPEG, PNG or WebP.",
+    "FILE_TOO_LARGE": "The image exceeds the 5 MB limit.",
     "INTERNAL_ERROR": "Internal server error."
   },
   "validation": {
